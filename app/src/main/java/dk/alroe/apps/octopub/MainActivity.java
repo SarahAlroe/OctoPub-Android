@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -15,15 +17,23 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    public  ArrayList<Thread> threads = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
+        mRecyclerView = (RecyclerView) findViewById(R.id.thread_view);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new ThreadAdapter(MainActivity.this, threads);
+        mRecyclerView.setAdapter(mAdapter);
+
         new updateThreads().execute(this);
 
     }
@@ -44,12 +54,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void onProgressUpdate(Thread ... thread) {
-            TextView textView = new TextView(parent);
-            textView.setTextSize(40);
-            textView.setText(thread[0].getTitle());
-
-            ViewGroup layout = (ViewGroup) findViewById(R.id.thread_view);
-            layout.addView(textView);
+            threads.add(thread[0]);
+            mAdapter.notifyDataSetChanged();
         }
     }
     /*public void sendMessage(View view){
