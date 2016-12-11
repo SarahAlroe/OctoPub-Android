@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .gradle
 /local.properties
 .DS_Store
@@ -5,6 +6,8 @@
 # Created by https://www.gitignore.io/api/android
 
 ### Android ###
+=======
+>>>>>>> cfd693f5c059704561e363f89091bb60a8835bca
 # Built application files
 *.apk
 *.ap_
@@ -42,6 +45,7 @@ captures/
 # Intellij
 *.iml
 .idea/workspace.xml
+<<<<<<< HEAD
 .idea/tasks.xml
 .idea/libraries
 
@@ -108,3 +112,8 @@ fabric.properties
 # modules.xml
 # .idea/misc.xml
 # *.ipr
+=======
+
+# Keystore files
+*.jks
+>>>>>>> cfd693f5c059704561e363f89091bb60a8835bca
