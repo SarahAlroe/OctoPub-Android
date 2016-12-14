@@ -1,16 +1,11 @@
 package dk.alroe.apps.octopub;
 
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +13,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private ThreadAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     public  ArrayList<Thread> threads = new ArrayList<>();
 
@@ -33,10 +28,22 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new ThreadAdapter(MainActivity.this, threads);
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(Thread item) {
+                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
+                goToThread(item);
+            }
+        });
 
         new updateThreads().execute(this);
 
     }
+
+    private void goToThread(Thread thread) {
+
+    }
+
     private class updateThreads extends AsyncTask<AppCompatActivity, Thread, Void> {
         AppCompatActivity parent;
         protected Void doInBackground(AppCompatActivity... appCompatActivities) {
@@ -58,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             mAdapter.notifyDataSetChanged();
         }
     }
+
     /*public void sendMessage(View view){
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         EditText editText = (EditText) findViewById(R.id.edit_message);

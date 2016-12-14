@@ -1,10 +1,7 @@
 package dk.alroe.apps.octopub;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +10,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by Silas on 11-12-2016.
- */
 public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapter<ThreadAdapter.ViewHolder> {
     private ArrayList<Thread> dataset;
     private Context context;
+
+    private OnItemClickListener onItemClickListener;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -56,7 +52,7 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Thread thread = dataset.get(position);
+        final Thread thread = dataset.get(position);
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.id.setText(thread.getId());
@@ -68,6 +64,14 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
             holder.id.setTextColor(context.getResources().getColor(R.color.textBright));
         }
         holder.id.setBackgroundColor(bgColor);
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClickListener.onItemClick(thread);
+            }
+        };
+        holder.title.setOnClickListener(listener);
+        holder.id.setOnClickListener(listener);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -75,6 +79,12 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
     public int getItemCount() {
         if (dataset == null){return 0;}
         return dataset.size();
+    }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+    public OnItemClickListener getOnItemClickListener() {
+        return onItemClickListener;
     }
 
 }
