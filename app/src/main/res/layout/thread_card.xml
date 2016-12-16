@@ -22,18 +22,17 @@
             android:maxLines="3"
             android:padding="8dp"
             android:textColor="#444"
-            android:textSize="18dp"
-            android:textStyle="bold"/>
+            style="@style/Base.TextAppearance.AppCompat.Headline"/>
         <TextView
             android:background="#000"
-            android:layout_weight="9"
             android:id="@+id/thread_id"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:gravity="center"
             android:layout_height="match_parent"
             android:maxLines="3"
-            android:padding="2dp"
+            android:padding="6dp"
             android:textColor="#fff"
-            android:textSize="12dp"
+            style="@style/Base.TextAppearance.AppCompat.Caption"
             android:fontFamily="monospace"/>
 
     </LinearLayout>

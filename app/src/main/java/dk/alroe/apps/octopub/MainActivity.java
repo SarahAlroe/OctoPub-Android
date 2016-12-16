@@ -1,5 +1,7 @@
 package dk.alroe.apps.octopub;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private RecyclerView mRecyclerView;
     private ThreadAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -20,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (noID()){
+            requestID();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRecyclerView = (RecyclerView) findViewById(R.id.thread_view);
@@ -35,13 +39,41 @@ public class MainActivity extends AppCompatActivity {
                 goToThread(item);
             }
         });
-
         new updateThreads().execute(this);
 
     }
 
     private void goToThread(Thread thread) {
+        Intent intent = new Intent(this, ThreadActivity.class);
+        intent.putExtra("ThreadID", thread.getId());
+        startActivity(intent);
+    }
 
+    private void requestID(){
+            ID idClass;
+            try {
+                idClass = WebRequestHandler.getInstance().newID();
+                updateID(idClass);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    }
+
+    private void updateID(ID idClass) {
+        SharedPreferences userData = getSharedPreferences("userData", 0);
+        String id = idClass.getId();
+        String hash = idClass.getHash();
+        SharedPreferences.Editor editor = userData.edit();
+        editor.putString("id",id);
+        editor.putString("hash",hash);
+        editor.apply();
+    }
+
+    private boolean noID(){
+        SharedPreferences userData = getSharedPreferences("userData", 0);
+        String id = userData.getString("id",null);
+        return (id == null);
     }
 
     private class updateThreads extends AsyncTask<AppCompatActivity, Thread, Void> {
@@ -65,17 +97,4 @@ public class MainActivity extends AppCompatActivity {
             mAdapter.notifyDataSetChanged();
         }
     }
-
-    /*public void sendMessage(View view){
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.edit_message);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        try {
-            WebRequestHandler.getInstance().getThreads();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        startActivity(intent);
-    }*/
 }

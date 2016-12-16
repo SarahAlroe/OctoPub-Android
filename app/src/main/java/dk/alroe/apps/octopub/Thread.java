@@ -5,6 +5,25 @@ package dk.alroe.apps.octopub;
  */
 
 public class Thread {
+    private String title;
+    private String id;
+    private int length;
+    private String text;
+
+
+    public Thread(String title, String id, int length) {
+        this.title = title;
+        this.id = id;
+        this.length = length;
+    }
+
+    public Thread(String title, String id, int length, String text) {
+        this.title = title;
+        this.id = id;
+        this.length = length;
+        this.text = text;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -35,17 +54,5 @@ public class Thread {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    private String title;
-    private String id;
-    private int length;
-    private String text;
-
-
-    public Thread(String title, String id, int length){
-        this.title = title;
-        this.id = id;
-        this.length = length;
     }
 }
