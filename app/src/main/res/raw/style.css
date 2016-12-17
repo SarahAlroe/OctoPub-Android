@@ -1,0 +1,8 @@
+@charset "utf-8";
+img{
+    max-width: 90%;
+}
+html,body{font-family: "Comic Sans MS", cursive, sans-serif;}
+h1,h2,h3,h4,h5,h6{font-family: "Comic Sans MS", cursive, sans-serif;}
+
+/*h1,h2,h3,h4,h5,h6{font-family: 'Roboto', sans-serif;}*/

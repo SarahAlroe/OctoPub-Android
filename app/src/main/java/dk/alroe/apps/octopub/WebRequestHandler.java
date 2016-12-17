@@ -46,8 +46,8 @@ public class WebRequestHandler {
         @GET("/getMessagesFrom/")
         Call<ArrayList<Message>> messagesFrom(@Query("thread") String id, @Query("fromNumber") int number);
 
-        @GET("/getHistory/?thread={id}")
-        Call<ArrayList<Message>> history(@Path("id") String id);
+        @GET("/getHistory/")
+        Call<ArrayList<Message>> history(@Query("thread") String id);
 
         @POST("/addMessage/")
         Call<String> addMessage(@Field("thread") String thread, @Field("text") String text, @Field("id") String id, @Field("hash") String hash);

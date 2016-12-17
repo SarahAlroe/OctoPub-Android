@@ -14,7 +14,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
+        <us.feras.mdv.MarkdownView
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:layout_height="wrap_content"
+            android:id="@+id/message_markdown"
+            />
+        <!--<TextView
             android:layout_weight="1"
             android:id="@+id/message_text"
             android:layout_width="match_parent"
@@ -23,13 +29,15 @@
             android:padding="8dp"
             android:textColor="#444"
             style="@style/Base.TextAppearance.AppCompat.Small"
-            tools:text="Sample text here"/>
+            tools:text="Sample text here"/>-->
         <TextView
+            android:layout_weight="0.25"
             android:background="#000"
             android:id="@+id/message_id"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:gravity="center"
             android:layout_height="match_parent"
+            android:minHeight="40dp"
             android:padding="6dp"
             android:textColor="#fff"
             style="@style/Base.TextAppearance.AppCompat.Caption"

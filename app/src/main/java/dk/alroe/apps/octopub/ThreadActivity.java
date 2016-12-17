@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ThreadActivity extends AppCompatActivity {
 
@@ -16,7 +18,7 @@ public class ThreadActivity extends AppCompatActivity {
     private MessageAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     public  ArrayList<Message> messages = new ArrayList<>();
-    public int currentProgress = 0;
+    public int currentProgress = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +30,9 @@ public class ThreadActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MessageAdapter(ThreadActivity.this, messages);
         mRecyclerView.setAdapter(mAdapter);
-        Intent intent = getIntent();
-        new updateMessages(intent.getStringExtra("ThreadID"), 0).execute(this);
+        mRecyclerView.setItemViewCacheSize(2);
+        final Intent intent = getIntent();
+        new updateMessages(intent.getStringExtra("ThreadID"), currentProgress).execute(this);
     }
 
     private class updateMessages extends AsyncTask<AppCompatActivity, Message, Void> {
@@ -49,7 +52,7 @@ public class ThreadActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Message threadMessage = new Message("#"+thread.getTitle()+"#  \n"+thread.getText(),thread.getId(),1337,-1);
+            Message threadMessage = new Message("#"+thread.getTitle()+"  \n"+thread.getText(),thread.getId(),1337,-1);
             publishProgress(threadMessage);
             ArrayList<Message> messages = new ArrayList<>();
             try {
@@ -65,8 +68,12 @@ public class ThreadActivity extends AppCompatActivity {
 
         protected void onProgressUpdate(Message ... messageList) {
             Message message = messageList[0];
-            messages.add(message);
-            currentProgress = message.getNumber();
+            if (messages.size()!=0) {
+                messages.add(1, message);
+            }else{
+                messages.add(message);
+            }
+            currentProgress = message.getNumber()-1;
             mAdapter.notifyDataSetChanged();
         }
     }
