@@ -1,7 +1,6 @@
 package dk.alroe.apps.octopub;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by silasa on 12/6/16.
@@ -40,11 +40,11 @@ public class WebRequestHandler {
         @GET("/getThreads")
         Call<List<Thread>> threads();
 
-        @GET("/getThread/?thread={id}")
-        Call<Thread> thread(@Path("id") String id);
+        @GET("/getThread/")
+        Call<Thread> thread(@Query("thread") String id);
 
-        @GET("/getMessagesFrom/?thread={id}&fromNumber={number}")
-        Call<ArrayList<Message>> messagesFrom(@Path("id") String id, @Path("number") int number);
+        @GET("/getMessagesFrom/")
+        Call<ArrayList<Message>> messagesFrom(@Query("thread") String id, @Query("fromNumber") int number);
 
         @GET("/getHistory/?thread={id}")
         Call<ArrayList<Message>> history(@Path("id") String id);

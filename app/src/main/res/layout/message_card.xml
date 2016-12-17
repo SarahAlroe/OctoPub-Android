@@ -16,21 +16,20 @@
 
         <TextView
             android:layout_weight="1"
-            android:id="@+id/thread_title"
+            android:id="@+id/message_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="3"
+            android:minHeight="40dp"
             android:padding="8dp"
             android:textColor="#444"
-            style="@style/Base.TextAppearance.AppCompat.Headline"
-            tools:text="Sample title here"/>
+            style="@style/Base.TextAppearance.AppCompat.Small"
+            tools:text="Sample text here"/>
         <TextView
             android:background="#000"
-            android:id="@+id/thread_id"
+            android:id="@+id/message_id"
             android:layout_width="wrap_content"
             android:gravity="center"
             android:layout_height="match_parent"
-            android:maxLines="3"
             android:padding="6dp"
             android:textColor="#fff"
             style="@style/Base.TextAppearance.AppCompat.Caption"
