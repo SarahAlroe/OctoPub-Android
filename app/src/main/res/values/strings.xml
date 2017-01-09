@@ -2,4 +2,8 @@
     <string name="app_name">OctoPub</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
+    <string name="action_refresh_id">Refresh ID</string>
+    <string name="action_help">Help</string>
+    <string name="action_addThread">Add Thread</string>
+    <string name="view_id">ID</string>
 </resources>

@@ -2,28 +2,30 @@ package dk.alroe.apps.octopub;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private ThreadAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    public  ArrayList<Thread> threads = new ArrayList<>();
-
+    private Menu menu;
+    public ArrayList<Thread> threads = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (noID()){
-           // requestID();
-        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRecyclerView = (RecyclerView) findViewById(R.id.thread_view);
@@ -39,8 +41,14 @@ public class MainActivity extends AppCompatActivity {
                 goToThread(item);
             }
         });
+        Toolbar appToolbar = (Toolbar) findViewById(R.id.app_toolbar);
+        setSupportActionBar(appToolbar);
         new updateThreads().execute(this);
-
+        if (noID()) {
+            new requestID().execute();
+        } else {
+            updateActionBar();
+        }
     }
 
     private void goToThread(Thread thread) {
@@ -49,35 +57,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void requestID(){
-            ID idClass;
-            try {
-                idClass = WebRequestHandler.getInstance().newID();
-                updateID(idClass);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-    }
-
-    private void updateID(ID idClass) {
-        SharedPreferences userData = getSharedPreferences("userData", 0);
-        String id = idClass.getId();
-        String hash = idClass.getHash();
-        SharedPreferences.Editor editor = userData.edit();
-        editor.putString("id",id);
-        editor.putString("hash",hash);
-        editor.apply();
-    }
-
-    private boolean noID(){
-        SharedPreferences userData = getSharedPreferences("userData", 0);
-        String id = userData.getString("id",null);
-        return (id == null);
-    }
-
     private class updateThreads extends AsyncTask<AppCompatActivity, Thread, Void> {
         AppCompatActivity parent;
+
         protected Void doInBackground(AppCompatActivity... appCompatActivities) {
             parent = appCompatActivities[0];
             ArrayList<Thread> threads = new ArrayList<>();
@@ -86,13 +68,13 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            for (Thread thread : threads){
+            for (Thread thread : threads) {
                 publishProgress(thread);
             }
             return null;
         }
 
-        protected void onProgressUpdate(Thread ... thread) {
+        protected void onProgressUpdate(Thread... thread) {
             threads.add(thread[0]);
             mAdapter.notifyDataSetChanged();
         }

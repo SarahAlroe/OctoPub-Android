@@ -6,13 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ThreadActivity extends AppCompatActivity {
+public class ThreadActivity extends BaseActivity {
 
     private RecyclerView mRecyclerView;
     private MessageAdapter mAdapter;
@@ -33,6 +34,13 @@ public class ThreadActivity extends AppCompatActivity {
         mRecyclerView.setItemViewCacheSize(2);
         final Intent intent = getIntent();
         new updateMessages(intent.getStringExtra("ThreadID"), currentProgress).execute(this);
+        Toolbar appToolbar = (Toolbar) findViewById(R.id.app_toolbar);
+        setSupportActionBar(appToolbar);
+        if (noID()) {
+            new requestID().execute();
+        } else {
+            updateActionBar();
+        }
     }
 
     private class updateMessages extends AsyncTask<AppCompatActivity, Message, Void> {
