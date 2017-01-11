@@ -1,10 +1,15 @@
 package dk.alroe.apps.octopub;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,16 +25,28 @@ public class BaseActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         MenuInflater inflater = getMenuInflater();
+
         if (ColorHelper.isBrightColor(Color.parseColor("#"+getID().getId()))){
+            getSupportActionBar().getThemedContext().setTheme(R.style.AppBarLight);
             inflater.inflate(R.menu.default_menu_black, menu);
             //setTheme(R.style.AppTheme);
         }else{
+            getSupportActionBar().getThemedContext().setTheme(R.style.AppBarDark);
             inflater.inflate(R.menu.default_menu_white, menu);
             //setTheme(R.style.AppThemeDark);
         }
         menu.findItem(R.id.view_id).setTitle(getID().getId());
-        //getSupportActionBar().getThemedContext().getTheme().applyStyle(R.style.ToolbarBright,true);
         return true;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        if (ColorHelper.isBrightColor(Color.parseColor("#"+getID().getId()))) {
+            getSupportActionBar().getThemedContext().setTheme(R.style.AppBarLight);
+        }else {
+            getSupportActionBar().getThemedContext().setTheme(R.style.AppBarDark);
+        }
+        super.onCreate(savedInstanceState, persistentState);
     }
 
     protected ID getID() {

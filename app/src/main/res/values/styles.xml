@@ -7,4 +7,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="AppBarLight" parent="@style/ThemeOverlay.AppCompat.ActionBar" />
+    <style name="AppBarDark" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 </resources>
