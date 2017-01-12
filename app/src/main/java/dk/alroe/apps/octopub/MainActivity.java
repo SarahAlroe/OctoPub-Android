@@ -1,9 +1,6 @@
 package dk.alroe.apps.octopub;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -22,8 +18,7 @@ public class MainActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private ThreadAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private Menu menu;
-    public ArrayList<Thread> threads = new ArrayList<>();
+    private ArrayList<Thread> threads = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +56,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private class updateThreads extends AsyncTask<AppCompatActivity, Thread, Void> {
-        AppCompatActivity parent;
 
         protected Void doInBackground(AppCompatActivity... appCompatActivities) {
-            parent = appCompatActivities[0];
             ArrayList<Thread> threads = new ArrayList<>();
             try {
                 threads = WebRequestHandler.getInstance().getThreads();

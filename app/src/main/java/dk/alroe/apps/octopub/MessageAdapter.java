@@ -2,7 +2,6 @@ package dk.alroe.apps.octopub;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import us.feras.mdv.MarkdownView;
 
@@ -29,6 +27,7 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
         // each data item is just a string in this case
         public MarkdownView text;
         public TextView id;
+
         public ViewHolder(View v) {
             super(v);
             this.text = (MarkdownView) v.findViewById(R.id.message_markdown);
@@ -59,12 +58,12 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
         final Message message = dataset.get(position);
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.id.setText(message.getId().substring(0,3)+message.getId().substring(3));
-        holder.text.loadMarkdown(message.getText(),"file:///android_res/raw/style.css");
-        int bgColor = Color.parseColor("#"+message.getId());
-        if (ColorHelper.isBrightColor(bgColor)){
+        holder.id.setText(message.getId().substring(0, 3) + message.getId().substring(3));
+        holder.text.loadMarkdown(message.getText(), "file:///android_res/raw/style.css");
+        int bgColor = Color.parseColor("#" + message.getId());
+        if (ColorHelper.isBrightColor(bgColor)) {
             holder.id.setTextColor(context.getResources().getColor(R.color.textDark));
-        }else {
+        } else {
             holder.id.setTextColor(context.getResources().getColor(R.color.textBright));
         }
         holder.id.setBackgroundColor(bgColor);
@@ -73,7 +72,9 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        if (dataset == null){return 0;}
+        if (dataset == null) {
+            return 0;
+        }
         return dataset.size();
     }
 

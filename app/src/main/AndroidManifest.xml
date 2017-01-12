@@ -20,8 +20,9 @@
         <activity
             android:name=".ThreadActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".HelpActivity"
-            android:parentActivityName=".MainActivity" ></activity>
+        <activity
+            android:name=".HelpActivity"
+            android:parentActivityName=".MainActivity"/>
     </application>
 
 </manifest>

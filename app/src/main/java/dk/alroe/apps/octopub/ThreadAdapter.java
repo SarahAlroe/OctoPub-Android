@@ -23,6 +23,7 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
         // each data item is just a string in this case
         public TextView title;
         public TextView id;
+
         public ViewHolder(View v) {
             super(v);
             this.title = (TextView) v.findViewById(R.id.thread_title);
@@ -39,14 +40,13 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
     // Create new views (invoked by the layout manager)
     @Override
     public ThreadAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+                                                       int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.thread_card, parent, false);
         //View i = LayoutInflater.from(parent.getContext()).inflate(R.layout.)
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -55,12 +55,12 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
         final Thread thread = dataset.get(position);
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.id.setText(thread.getId().substring(0,3)+"\n"+thread.getId().substring(3));
+        holder.id.setText(thread.getId().substring(0, 3) + "\n" + thread.getId().substring(3));
         holder.title.setText(thread.getTitle());
-        int bgColor = Color.parseColor("#"+thread.getId());
-        if (ColorHelper.isBrightColor(bgColor)){
+        int bgColor = Color.parseColor("#" + thread.getId());
+        if (ColorHelper.isBrightColor(bgColor)) {
             holder.id.setTextColor(context.getResources().getColor(R.color.textDark));
-        }else {
+        } else {
             holder.id.setTextColor(context.getResources().getColor(R.color.textBright));
         }
         holder.id.setBackgroundColor(bgColor);
@@ -77,12 +77,16 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        if (dataset == null){return 0;}
+        if (dataset == null) {
+            return 0;
+        }
         return dataset.size();
     }
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
+
     public OnItemClickListener getOnItemClickListener() {
         return onItemClickListener;
     }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="2dp"
     cardview:cardCornerRadius="2dp"
     cardview:cardElevation="3dp"
@@ -15,27 +15,28 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_weight="1"
             android:id="@+id/thread_title"
-            android:layout_width="match_parent"
+            style="@style/Base.TextAppearance.AppCompat.Headline"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:maxLines="3"
             android:padding="8dp"
             android:textColor="#444"
-            style="@style/Base.TextAppearance.AppCompat.Headline"
-            tools:text="Sample title here"/>
+            tools:text="Sample title here" />
+
         <TextView
-            android:background="#000"
             android:id="@+id/thread_id"
+            style="@style/Base.TextAppearance.AppCompat.Caption"
             android:layout_width="wrap_content"
-            android:gravity="center"
             android:layout_height="match_parent"
+            android:background="#000"
+            android:fontFamily="monospace"
+            android:gravity="center"
             android:maxLines="3"
             android:padding="6dp"
             android:textColor="#fff"
-            style="@style/Base.TextAppearance.AppCompat.Caption"
-            android:fontFamily="monospace"
-            tools:text="AAA\nAAA"/>
+            tools:text="AAA\nAAA" />
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

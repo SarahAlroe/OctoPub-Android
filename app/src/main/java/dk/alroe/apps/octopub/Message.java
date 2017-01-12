@@ -4,7 +4,7 @@ package dk.alroe.apps.octopub;
  * Created by silasa on 12/14/16.
  */
 
-public class Message {
+class Message {
     private final String text;
     private final String id;
 
@@ -26,7 +26,8 @@ public class Message {
 
     private final int time;
     private final int number;
-    public Message(String text,String id, int time, int number){
+
+    public Message(String text, String id, int time, int number) {
         this.text = text;
         this.id = id;
         this.time = time;

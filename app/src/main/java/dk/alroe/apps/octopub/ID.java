@@ -15,7 +15,8 @@ public class ID {
 
     private final String id;
     private final String hash;
-    public ID(String id, String hash){
+
+    public ID(String id, String hash) {
         this.id = id;
         this.hash = hash;
     }

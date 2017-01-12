@@ -10,7 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -62,38 +61,40 @@ public class WebRequestHandler {
     public ArrayList<Thread> getThreads() throws IOException {
         OctoPub octoPub = retrofit.create(OctoPub.class);
         Call<List<Thread>> call = octoPub.threads();
-        ArrayList<Thread> Threads = (ArrayList<Thread>) call.execute().body();
-        return Threads;
+        return (ArrayList<Thread>) call.execute().body();
     }
 
-    public ID newID() throws IOException{
+    public ID newID() throws IOException {
         OctoPub octoPub = retrofit.create(OctoPub.class);
         Call<ID> call = octoPub.id();
         return call.execute().body();
     }
 
-    public Thread getThread(String id) throws IOException{
+    public Thread getThread(String id) throws IOException {
         OctoPub octoPub = retrofit.create(OctoPub.class);
         Call<Thread> call = octoPub.thread(id);
         return call.execute().body();
     }
 
-    public ArrayList getMessagesFrom(String thread, int number) throws IOException{
+    public ArrayList getMessagesFrom(String thread, int number) throws IOException {
         OctoPub octoPub = retrofit.create(OctoPub.class);
         Call<ArrayList<Message>> call = octoPub.messagesFrom(thread, number);
         return call.execute().body();
     }
-    public ArrayList getHistory(String thread) throws IOException{
+
+    public ArrayList getHistory(String thread) throws IOException {
         OctoPub octoPub = retrofit.create(OctoPub.class);
         Call<ArrayList<Message>> call = octoPub.history(thread);
         return call.execute().body();
     }
-    public boolean addMessage (String thread, String text, ID id) throws IOException {
+
+    public boolean addMessage(String thread, String text, ID id) throws IOException {
         OctoPub octoPub = retrofit.create(OctoPub.class);
         Call<String> call = octoPub.addMessage(thread, text, id.getId(), id.getHash());
         return call.execute().isSuccessful();
     }
-    public String getHelp () throws IOException{
+
+    public String getHelp() throws IOException {
         OctoPub octoPub = retrofit.create(OctoPub.class);
         Call<String> call = octoPub.help();
         return call.execute().body();

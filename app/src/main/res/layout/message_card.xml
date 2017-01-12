@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="2dp"
     cardview:cardCornerRadius="2dp"
     cardview:cardElevation="3dp"
@@ -15,34 +15,24 @@
         android:orientation="horizontal">
 
         <us.feras.mdv.MarkdownView
-            android:layout_width="0dp"
-            android:layout_weight="9"
-            android:layout_height="wrap_content"
             android:id="@+id/message_markdown"
-            />
-        <!--<TextView
-            android:layout_weight="1"
-            android:id="@+id/message_text"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minHeight="40dp"
-            android:padding="8dp"
-            android:textColor="#444"
-            style="@style/Base.TextAppearance.AppCompat.Small"
-            tools:text="Sample text here"/>-->
+            android:layout_weight="9" />
+
         <TextView
+            android:id="@+id/message_id"
+            style="@style/Base.TextAppearance.AppCompat.Caption"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="0.25"
             android:background="#000"
-            android:id="@+id/message_id"
-            android:layout_width="0dp"
+            android:fontFamily="monospace"
             android:gravity="center"
-            android:layout_height="match_parent"
             android:minHeight="40dp"
             android:padding="6dp"
             android:textColor="#fff"
-            style="@style/Base.TextAppearance.AppCompat.Caption"
-            android:fontFamily="monospace"
-            tools:text="AAA\nAAA"/>
+            tools:text="AAA\nAAA" />
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

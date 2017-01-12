@@ -41,20 +41,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:theme="@style/AppBarDark"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/message_create_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:clickable="true"
         android:src="@drawable/ic_create_black_24dp"
         app:fabSize="normal"
         app:layout_anchor="@id/app_toolbar_collapsing"
-        app:layout_anchorGravity="bottom|right|end"
-        android:clickable="true" />
+        app:layout_anchorGravity="bottom|right|end" />
 
 </android.support.design.widget.CoordinatorLayout>

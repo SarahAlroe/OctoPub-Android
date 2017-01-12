@@ -27,8 +27,6 @@ public class ThreadActivity extends BaseActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     public  ArrayList<Message> messages = new ArrayList<>();
     public int currentProgress = -1;
-    public String title;
-    public String text;
     public Toolbar appToolbar;
 
     @Override
@@ -65,8 +63,7 @@ public class ThreadActivity extends BaseActivity {
         } else {
             updateActionBar();
         }
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
     }
     public void setTitle(String title){
         //TextView titleView = (TextView) findViewById(R.id.toolbar_title);
@@ -74,6 +71,7 @@ public class ThreadActivity extends BaseActivity {
         appToolbar.setTitle(title);
     }
     public void setText(String text){
+        //TODO add subheader thing
         //TextView textView = (TextView) findViewById(R.id.toolbar_text);
         //textView.setText(text);
         //appToolbar.setSubtitle(text);
