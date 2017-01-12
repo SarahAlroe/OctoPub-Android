@@ -88,16 +88,22 @@ public class ThreadActivity extends BaseActivity {
         }
         protected Void doInBackground(AppCompatActivity... appCompatActivities) {
             parent = appCompatActivities[0];
-            ThreadActivity realParent = (ThreadActivity) parent;
+            final ThreadActivity realParent = (ThreadActivity) parent;
             Thread thread = new Thread("","",0);
             try {
                 thread = WebRequestHandler.getInstance().getThread(threadToGet);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            final Thread finalThread = thread;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    realParent.setTitle(finalThread.getTitle());
+                    realParent.setText(finalThread.getText());
+                }
+            });
             Message threadMessage = new Message("#"+thread.getTitle()+"  \n"+thread.getText(),thread.getId(),1337,-1);
-            realParent.setTitle(thread.getTitle());
-            realParent.setText(thread.getText());
             publishProgress(threadMessage);
             ArrayList<Message> messages = new ArrayList<>();
             try {
