@@ -7,8 +7,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,17 +24,29 @@ import java.io.IOException;
 
 public class BaseActivity extends AppCompatActivity {
     private Menu menu;
+    public CollapsingToolbarLayout collapsingToolbar;
+    public Toolbar toolbar;
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         MenuInflater inflater = getMenuInflater();
-
+        //mToolbar.setNavigationIcon(R.mipmap.ic_launcher);
+        //mToolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.ic_menu));
         if (ColorHelper.isBrightColor(Color.parseColor("#"+getID().getId()))){
             getSupportActionBar().getThemedContext().setTheme(R.style.AppBarLight);
             inflater.inflate(R.menu.default_menu_black, menu);
+            collapsingToolbar.setExpandedTitleColor(Color.BLACK);
+            collapsingToolbar.setCollapsedTitleTextColor(Color.BLACK);
+            collapsingToolbar.setExpandedTitleTextAppearance(R.style.AppBarDark);
+            toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+            toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_more_vert_black_24dp));
             //setTheme(R.style.AppTheme);
         }else{
             getSupportActionBar().getThemedContext().setTheme(R.style.AppBarDark);
             inflater.inflate(R.menu.default_menu_white, menu);
+            collapsingToolbar.setExpandedTitleColor(Color.WHITE);
+            collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
+            toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+            toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_more_vert_white_24dp));
             //setTheme(R.style.AppThemeDark);
         }
         menu.findItem(R.id.view_id).setTitle(getID().getId());
@@ -57,7 +71,9 @@ public class BaseActivity extends AppCompatActivity {
     }
     protected void updateActionBar() {
         int bgColor = Color.parseColor("#" + getID().getId());
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(bgColor));
+        //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(bgColor));
+        //collapsingToolbar.setContentScrimColor(bgColor);
+        collapsingToolbar.setBackgroundColor(bgColor);
         if (menu!=null) {
             menu.findItem(R.id.view_id).setTitle(getID().getId());
         }

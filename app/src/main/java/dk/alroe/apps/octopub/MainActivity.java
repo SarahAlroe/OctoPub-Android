@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,6 +43,8 @@ public class MainActivity extends BaseActivity {
             }
         });
         Toolbar appToolbar = (Toolbar) findViewById(R.id.app_toolbar);
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.app_toolbar_collapsing);
+        toolbar = appToolbar;
         setSupportActionBar(appToolbar);
         new updateThreads().execute(this);
         if (noID()) {
