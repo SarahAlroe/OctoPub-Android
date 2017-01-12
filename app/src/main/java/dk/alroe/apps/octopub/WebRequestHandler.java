@@ -54,6 +54,9 @@ public class WebRequestHandler {
 
         @POST("/addThread/")
         Call<String> addThread(@Field("title") String title, @Field("text") String text);
+
+        @GET("/getHelp/")
+        Call<String> help();
     }
 
     public ArrayList<Thread> getThreads() throws IOException {
@@ -89,5 +92,10 @@ public class WebRequestHandler {
         OctoPub octoPub = retrofit.create(OctoPub.class);
         Call<String> call = octoPub.addMessage(thread, text, id.getId(), id.getHash());
         return call.execute().isSuccessful();
+    }
+    public String getHelp () throws IOException{
+        OctoPub octoPub = retrofit.create(OctoPub.class);
+        Call<String> call = octoPub.help();
+        return call.execute().body();
     }
 }

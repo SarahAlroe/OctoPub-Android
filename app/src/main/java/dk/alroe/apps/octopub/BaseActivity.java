@@ -1,6 +1,7 @@
 package dk.alroe.apps.octopub;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -64,6 +65,11 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState, persistentState);
     }
 
+    private void goToHelp() {
+        Intent intent = new Intent(this, HelpActivity.class);
+        startActivity(intent);
+    }
+
     protected ID getID() {
         SharedPreferences sp = getSharedPreferences("userData", 0);
         String id = sp.getString("id", null);
@@ -124,7 +130,7 @@ public class BaseActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_help:
-                //TODO add help screen
+                goToHelp();
                 return true;
             case R.id.action_refresh_id:
                 new requestID().execute();
