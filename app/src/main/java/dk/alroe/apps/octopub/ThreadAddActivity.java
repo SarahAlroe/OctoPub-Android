@@ -19,7 +19,6 @@ public class ThreadAddActivity extends BaseActivity {
         Toolbar appToolbar = (Toolbar) findViewById(R.id.app_toolbar);
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.app_toolbar_collapsing);
         toolbar = appToolbar;
-        appToolbar.setTitle("Add Thread");
         setSupportActionBar(appToolbar);
         if (noID()) {
             new requestID().execute();
@@ -38,17 +37,18 @@ public class ThreadAddActivity extends BaseActivity {
     private void addThreadClicked() {
         EditText titleInput = ((EditText) findViewById(R.id.editText_title));
         EditText textInput = ((EditText) findViewById(R.id.editText_text));
-        Thread newThread = new Thread(titleInput.getText().toString(),"NEWTHD",0,textInput.getText().toString());
+        Thread newThread = new Thread(titleInput.getText().toString(), "NEWTHD", 0, textInput.getText().toString());
         new submitThread(newThread).execute(this);
     }
 
     private class submitThread extends AsyncTask<AppCompatActivity, Void, ID> {
         private Thread threadToSubmit;
 
-        submitThread(Thread thread){
+        submitThread(Thread thread) {
             super();
             threadToSubmit = thread;
         }
+
         protected ID doInBackground(AppCompatActivity... appCompatActivities) {
             ID id = null;
             try {
@@ -63,7 +63,7 @@ public class ThreadAddActivity extends BaseActivity {
         protected void onPostExecute(ID newID) {
             super.onPostExecute(newID);
             updateID(newID);
-            Thread transitionThread = new Thread(threadToSubmit.getTitle(),newID.getId(),0,threadToSubmit.getText());
+            Thread transitionThread = new Thread(threadToSubmit.getTitle(), newID.getId(), 0, threadToSubmit.getText());
             goToThread(transitionThread);
         }
     }

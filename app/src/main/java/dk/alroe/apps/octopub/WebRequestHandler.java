@@ -111,7 +111,7 @@ public class WebRequestHandler {
 
     public ID addThread(Thread thread) throws IOException {
         OctoPub octoPub = retrofit.create(OctoPub.class);
-        Call<ID> call = octoPub.addThread(thread.getTitle(),thread.getText());
+        Call<ID> call = octoPub.addThread(thread.getTitle(), thread.getText());
         return call.execute().body();
     }
 }

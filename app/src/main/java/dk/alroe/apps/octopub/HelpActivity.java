@@ -1,9 +1,9 @@
 package dk.alroe.apps.octopub;
 
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +29,6 @@ public class HelpActivity extends BaseActivity {
         Toolbar appToolbar = (Toolbar) findViewById(R.id.app_toolbar);
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.app_toolbar_collapsing);
         toolbar = appToolbar;
-        appToolbar.setTitle("Help");
         setSupportActionBar(appToolbar);
         new showHelp().execute(this);
         if (noID()) {

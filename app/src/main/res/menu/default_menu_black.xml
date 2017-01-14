@@ -2,19 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_addThread"
-        android:title="@string/action_addThread"
+    <item
+        android:id="@+id/action_addThread"
         android:icon="@drawable/ic_add_black_24dp"
-        app:showAsAction="ifRoom"/>
-    <item android:id="@+id/action_refresh_id"
-        android:title="@string/action_refresh_id"
+        android:title="@string/action_addThread"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_refresh_id"
         android:icon="@drawable/ic_refresh_black_24dp"
-        app:showAsAction="ifRoom"/>
-    <item android:id="@+id/action_help"
-        android:title="@string/action_help"
+        android:title="@string/action_refresh_id"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_help"
         android:icon="@drawable/ic_help_black_24dp"
-        app:showAsAction="never"/>
-    <item android:id="@+id/view_id"
+        android:title="@string/action_help"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/view_id"
         android:title="@string/view_id"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 </menu>

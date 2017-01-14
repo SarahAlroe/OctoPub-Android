@@ -22,13 +22,15 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".HelpActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:label="@string/title_help"/>
         <activity android:name=".ThreadAddActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:label="@string/title_add_thread"/>
         <activity
             android:name=".MessageEntryActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog"
-            android:label="New Message"
+            android:label="@string/title_add_message"
             />
     </application>
 

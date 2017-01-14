@@ -1,37 +1,32 @@
 package dk.alroe.apps.octopub;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.view.CollapsibleActionView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class ThreadActivity extends BaseActivity {
 
     private static final int MESSAGE_REQUEST = 1;
-    private RecyclerView mRecyclerView;
-    private MessageAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private SwipeRefreshLayout swipeRefreshLayout;
     public ArrayList<Message> messages = new ArrayList<>();
     public int currentProgress = -1;
     public String currentThread;
     public Toolbar appToolbar;
+    private RecyclerView mRecyclerView;
+    private MessageAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +69,7 @@ public class ThreadActivity extends BaseActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new updateMessages(currentThread,currentProgress).execute();
+                new updateMessages(currentThread, currentProgress).execute();
             }
         });
         if (noID()) {
@@ -87,13 +82,13 @@ public class ThreadActivity extends BaseActivity {
 
     private void fabClicked() {
         Intent intent = new Intent(this, MessageEntryActivity.class);
-        startActivityForResult(intent,MESSAGE_REQUEST);
+        startActivityForResult(intent, MESSAGE_REQUEST);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==MESSAGE_REQUEST && resultCode==RESULT_OK){
+        if (requestCode == MESSAGE_REQUEST && resultCode == RESULT_OK) {
             String message = data.getStringExtra("text");
             new submitMessage(message).execute(this);
         }
@@ -112,27 +107,33 @@ public class ThreadActivity extends BaseActivity {
         //textView.setText(text);
         //appToolbar.setSubtitle(text);
     }
+
     private class submitMessage extends AsyncTask<AppCompatActivity, Void, Void> {
         String messageToSend;
         ThreadActivity parent;
-        submitMessage(String message){
+
+        submitMessage(String message) {
             messageToSend = message;
         }
+
         @Override
         protected Void doInBackground(AppCompatActivity... appCompatActivities) {
             parent = ((ThreadActivity) appCompatActivities[0]);
             try {
-                WebRequestHandler.getInstance().addMessage(parent.currentThread,messageToSend,getID());
-            }catch (IOException e){e.printStackTrace();}
+                WebRequestHandler.getInstance().addMessage(parent.currentThread, messageToSend, getID());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            new updateMessages(currentThread,currentProgress).execute();
+            new updateMessages(currentThread, currentProgress).execute();
         }
     }
+
     private class updateMessages extends AsyncTask<Void, Message, Void> {
         String threadToGet;
         int startNumber;
@@ -150,9 +151,10 @@ public class ThreadActivity extends BaseActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (currentProgress==-1){
-            Message threadMessage = new Message("#" + thread.getTitle() + "  \n" + thread.getText(), thread.getId(), 1337, -1);
-            publishProgress(threadMessage);}
+            if (currentProgress == -1) {
+                Message threadMessage = new Message("#" + thread.getTitle() + "  \n" + thread.getText(), thread.getId(), 1337, -1);
+                publishProgress(threadMessage);
+            }
             ArrayList<Message> messages = new ArrayList<>();
             try {
                 messages = WebRequestHandler.getInstance().getMessagesFrom(threadToGet, startNumber);
@@ -172,8 +174,9 @@ public class ThreadActivity extends BaseActivity {
             } else {
                 messages.add(message);
             }
-            if (currentProgress<message.getNumber()){
-            currentProgress = message.getNumber();}
+            if (currentProgress < message.getNumber()) {
+                currentProgress = message.getNumber();
+            }
             mAdapter.notifyDataSetChanged();
         }
 

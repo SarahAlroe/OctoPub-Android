@@ -2,12 +2,10 @@ package dk.alroe.apps.octopub;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -43,8 +41,8 @@ public class MessageEntryActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.putExtra("text",messageInput.getText().toString());
-                setResult(RESULT_OK,intent);
+                intent.putExtra("text", messageInput.getText().toString());
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });

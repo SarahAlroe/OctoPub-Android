@@ -11,4 +11,7 @@
     <string name="button_submit">Submit</string>
     <string name="button_cancel">Cancel</string>
     <string name="markdown_preview">Markdown Preview:</string>
+    <string name="title_help">Help</string>
+    <string name="title_add_thread">Add Thread</string>
+    <string name="title_add_message">New Message</string>
 </resources>

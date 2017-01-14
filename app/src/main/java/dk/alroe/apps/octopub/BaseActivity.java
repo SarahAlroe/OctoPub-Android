@@ -25,9 +25,9 @@ import java.io.IOException;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
-    private Menu menu;
     public CollapsingToolbarLayout collapsingToolbar;
     public Toolbar toolbar;
+    private Menu menu;
 
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
@@ -69,10 +69,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(this, HelpActivity.class);
         startActivity(intent);
     }
+
     void goToThreadAdd() {
         Intent intent = new Intent(this, ThreadAddActivity.class);
         startActivity(intent);
     }
+
     void goToThread(Thread thread) {
         Intent intent = new Intent(this, ThreadActivity.class);
         intent.putExtra("ThreadID", thread.getId());
@@ -98,8 +100,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         invalidateOptionsMenu();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             String title = ((String) collapsingToolbar.getTitle());
-            Bitmap icon = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
-            setTaskDescription(new ActivityManager.TaskDescription(title,icon,bgColor));
+            Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+            setTaskDescription(new ActivityManager.TaskDescription(title, icon, bgColor));
         }
     }
 
@@ -119,23 +121,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         SharedPreferences userData = getSharedPreferences("userData", 0);
         String id = userData.getString("id", null);
         return (id == null);
-    }
-
-    protected class requestID extends AsyncTask<Void, Void, ID> {
-        protected ID doInBackground(Void... voids) {
-            try {
-                return WebRequestHandler.getInstance().newID();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(ID id) {
-            super.onPostExecute(id);
-            updateID(id);
-        }
     }
 
     @Override
@@ -159,6 +144,23 @@ public abstract class BaseActivity extends AppCompatActivity {
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
 
+        }
+    }
+
+    protected class requestID extends AsyncTask<Void, Void, ID> {
+        protected ID doInBackground(Void... voids) {
+            try {
+                return WebRequestHandler.getInstance().newID();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(ID id) {
+            super.onPostExecute(id);
+            updateID(id);
         }
     }
 }
