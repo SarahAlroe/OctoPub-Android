@@ -3,6 +3,7 @@ package dk.alroe.apps.octopub;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ public class MainActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private ThreadAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ArrayList<Thread> threads = new ArrayList<>();
 
     @Override
@@ -41,17 +43,25 @@ public class MainActivity extends BaseActivity {
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.app_toolbar_collapsing);
         toolbar = appToolbar;
         setSupportActionBar(appToolbar);
-        new updateThreads().execute(this);
+        new updateThreads().execute();
         if (noID()) {
             new requestID().execute();
         } else {
             updateActionBar();
         }
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                threads.clear();
+                new updateThreads().execute();
+            }
+        });
     }
 
-    private class updateThreads extends AsyncTask<AppCompatActivity, Thread, Void> {
+    private class updateThreads extends AsyncTask<Void, Thread, Void> {
 
-        protected Void doInBackground(AppCompatActivity... appCompatActivities) {
+        protected Void doInBackground(Void... voids) {
             ArrayList<Thread> threads = new ArrayList<>();
             try {
                 threads = WebRequestHandler.getInstance().getThreads();
@@ -67,6 +77,12 @@ public class MainActivity extends BaseActivity {
         protected void onProgressUpdate(Thread... thread) {
             threads.add(thread[0]);
             mAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 }

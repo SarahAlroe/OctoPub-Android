@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.CollapsibleActionView;
@@ -26,6 +27,7 @@ public class ThreadActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private MessageAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
     public ArrayList<Message> messages = new ArrayList<>();
     public int currentProgress = -1;
     public String currentThread;
@@ -44,7 +46,7 @@ public class ThreadActivity extends BaseActivity {
         mRecyclerView.setItemViewCacheSize(2);
         final Intent intent = getIntent();
         currentThread = intent.getStringExtra("ThreadID");
-        new updateMessages(currentThread, currentProgress).execute(this);
+        new updateMessages(currentThread, currentProgress).execute();
         appToolbar = (Toolbar) findViewById(R.id.app_toolbar);
         toolbar = appToolbar;
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.app_toolbar_collapsing);
@@ -68,6 +70,13 @@ public class ThreadActivity extends BaseActivity {
             }
         });
         setSupportActionBar(appToolbar);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new updateMessages(currentThread,currentProgress).execute();
+            }
+        });
         if (noID()) {
             new requestID().execute();
         } else {
@@ -121,11 +130,10 @@ public class ThreadActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            new updateMessages(currentThread,currentProgress).execute(parent);
+            new updateMessages(currentThread,currentProgress).execute();
         }
     }
-    private class updateMessages extends AsyncTask<AppCompatActivity, Message, Void> {
-        AppCompatActivity parent;
+    private class updateMessages extends AsyncTask<Void, Message, Void> {
         String threadToGet;
         int startNumber;
 
@@ -135,9 +143,7 @@ public class ThreadActivity extends BaseActivity {
             startNumber = start;
         }
 
-        protected Void doInBackground(AppCompatActivity... appCompatActivities) {
-            parent = appCompatActivities[0];
-            final ThreadActivity realParent = (ThreadActivity) parent;
+        protected Void doInBackground(Void... Voids) {
             Thread thread = new Thread("", "", 0);
             try {
                 thread = WebRequestHandler.getInstance().getThread(threadToGet);
@@ -169,6 +175,12 @@ public class ThreadActivity extends BaseActivity {
             if (currentProgress<message.getNumber()){
             currentProgress = message.getNumber();}
             mAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 }
