@@ -23,7 +23,13 @@
         <activity
             android:name=".HelpActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".ThreadAddActivity"></activity>
+        <activity android:name=".ThreadAddActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".MessageEntryActivity"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"
+            android:label="New Message"
+            />
     </application>
 
 </manifest>

@@ -55,6 +55,7 @@ public class WebRequestHandler {
         @GET("/getHistory/")
         Call<ArrayList<Message>> history(@Query("thread") String id);
 
+        @FormUrlEncoded
         @POST("/addMessage/")
         Call<String> addMessage(@Field("thread") String thread, @Field("text") String text, @Field("id") String id, @Field("hash") String hash);
 

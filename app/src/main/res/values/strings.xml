@@ -9,4 +9,6 @@
     <string name="textInput_text_title">Title</string>
     <string name="textInput_text_text">Text</string>
     <string name="button_submit">Submit</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="markdown_preview">Markdown Preview:</string>
 </resources>
