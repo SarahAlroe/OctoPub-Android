@@ -25,7 +25,7 @@ public class ThreadActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private MessageAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    public  ArrayList<Message> messages = new ArrayList<>();
+    public ArrayList<Message> messages = new ArrayList<>();
     public int currentProgress = -1;
     public Toolbar appToolbar;
 
@@ -45,12 +45,13 @@ public class ThreadActivity extends BaseActivity {
         appToolbar = (Toolbar) findViewById(R.id.app_toolbar);
         toolbar = appToolbar;
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.app_toolbar_collapsing);
+        setTitle(intent.getStringExtra("ThreadTitle"));
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.message_create_button);
         AppBarLayout appBar = (AppBarLayout) findViewById(R.id.app_bar_layout);
         appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (-verticalOffset>appBarLayout.getHeight()/3) {
+                if (-verticalOffset > appBarLayout.getHeight() / 3) {
                     fab.hide();
                 } else {
                     fab.show();
@@ -65,12 +66,15 @@ public class ThreadActivity extends BaseActivity {
         }
 
     }
-    public void setTitle(String title){
+
+    public void setTitle(String title) {
         //TextView titleView = (TextView) findViewById(R.id.toolbar_title);
         //titleView.setText(title);
-        appToolbar.setTitle(title);
+        //((TextView) findViewById(R.id.toolbar_title)).setText(title);
+        collapsingToolbar.setTitle(title);
     }
-    public void setText(String text){
+
+    public void setText(String text) {
         //TODO add subheader thing
         //TextView textView = (TextView) findViewById(R.id.toolbar_text);
         //textView.setText(text);
@@ -81,29 +85,23 @@ public class ThreadActivity extends BaseActivity {
         AppCompatActivity parent;
         String threadToGet;
         int startNumber;
-        public updateMessages(String id, int start){
+
+        public updateMessages(String id, int start) {
             super();
             threadToGet = id;
             startNumber = start;
         }
+
         protected Void doInBackground(AppCompatActivity... appCompatActivities) {
             parent = appCompatActivities[0];
             final ThreadActivity realParent = (ThreadActivity) parent;
-            Thread thread = new Thread("","",0);
+            Thread thread = new Thread("", "", 0);
             try {
                 thread = WebRequestHandler.getInstance().getThread(threadToGet);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            final Thread finalThread = thread;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    realParent.setTitle(finalThread.getTitle());
-                    realParent.setText(finalThread.getText());
-                }
-            });
-            Message threadMessage = new Message("#"+thread.getTitle()+"  \n"+thread.getText(),thread.getId(),1337,-1);
+            Message threadMessage = new Message("#" + thread.getTitle() + "  \n" + thread.getText(), thread.getId(), 1337, -1);
             publishProgress(threadMessage);
             ArrayList<Message> messages = new ArrayList<>();
             try {
@@ -111,20 +109,20 @@ public class ThreadActivity extends BaseActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            for (Message message : messages){
+            for (Message message : messages) {
                 publishProgress(message);
             }
             return null;
         }
 
-        protected void onProgressUpdate(Message ... messageList) {
+        protected void onProgressUpdate(Message... messageList) {
             Message message = messageList[0];
-            if (messages.size()!=0) {
+            if (messages.size() != 0) {
                 messages.add(1, message);
-            }else{
+            } else {
                 messages.add(message);
             }
-            currentProgress = message.getNumber()-1;
+            currentProgress = message.getNumber() - 1;
             mAdapter.notifyDataSetChanged();
         }
     }
