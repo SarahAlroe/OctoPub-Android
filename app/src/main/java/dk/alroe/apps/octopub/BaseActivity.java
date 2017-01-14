@@ -1,9 +1,13 @@
 package dk.alroe.apps.octopub;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -82,6 +86,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             menu.findItem(R.id.view_id).setTitle(getID().getId());
         }
         invalidateOptionsMenu();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            String title = ((String) collapsingToolbar.getTitle());
+            Bitmap icon = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
+            setTaskDescription(new ActivityManager.TaskDescription(title,icon,bgColor));
+        }
     }
 
     protected void updateID(ID idClass) {
