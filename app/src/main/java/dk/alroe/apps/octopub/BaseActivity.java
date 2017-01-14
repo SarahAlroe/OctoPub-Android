@@ -68,7 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected ID getID() {
         SharedPreferences sp = getSharedPreferences("userData", 0);
-        String id = sp.getString("id", null);
+        String id = sp.getString("id", "009688");
         String hash = sp.getString("hash", null);
         return new ID(id, hash);
     }
