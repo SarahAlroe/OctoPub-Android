@@ -20,4 +20,9 @@ public class ID {
         this.id = id;
         this.hash = hash;
     }
+
+    @Override
+    public String toString() {
+        return "ID: "+id+", hash: "+hash;
+    }
 }

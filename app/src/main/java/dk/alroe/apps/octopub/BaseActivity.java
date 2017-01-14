@@ -65,8 +65,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState, persistentState);
     }
 
-    private void goToHelp() {
+    void goToHelp() {
         Intent intent = new Intent(this, HelpActivity.class);
+        startActivity(intent);
+    }
+    void goToThreadAdd() {
+        Intent intent = new Intent(this, ThreadAddActivity.class);
+        startActivity(intent);
+    }
+    void goToThread(Thread thread) {
+        Intent intent = new Intent(this, ThreadActivity.class);
+        intent.putExtra("ThreadID", thread.getId());
+        intent.putExtra("ThreadTitle", thread.getTitle());
         startActivity(intent);
     }
 
@@ -135,7 +145,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.action_addThread:
-                //TODO add new thread
+                goToThreadAdd();
                 return true;
 
             case R.id.action_help:

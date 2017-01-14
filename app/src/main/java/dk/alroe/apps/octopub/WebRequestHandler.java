@@ -2,12 +2,19 @@ package dk.alroe.apps.octopub;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -22,7 +29,7 @@ public class WebRequestHandler {
         return ourInstance;
     }
 
-    private static final String BASE_URL = "http://api.octopub.tk/";
+    private static final String BASE_URL = "https://api.octopub.tk/";
     private Retrofit retrofit;
 
     private WebRequestHandler() {
@@ -51,8 +58,9 @@ public class WebRequestHandler {
         @POST("/addMessage/")
         Call<String> addMessage(@Field("thread") String thread, @Field("text") String text, @Field("id") String id, @Field("hash") String hash);
 
+        @FormUrlEncoded
         @POST("/addThread/")
-        Call<String> addThread(@Field("title") String title, @Field("text") String text);
+        Call<ID> addThread(@Field("title") String title, @Field("text") String text);
 
         @GET("/getHelp/")
         Call<String> help();
@@ -97,6 +105,12 @@ public class WebRequestHandler {
     public String getHelp() throws IOException {
         OctoPub octoPub = retrofit.create(OctoPub.class);
         Call<String> call = octoPub.help();
+        return call.execute().body();
+    }
+
+    public ID addThread(Thread thread) throws IOException {
+        OctoPub octoPub = retrofit.create(OctoPub.class);
+        Call<ID> call = octoPub.addThread(thread.getTitle(),thread.getText());
         return call.execute().body();
     }
 }

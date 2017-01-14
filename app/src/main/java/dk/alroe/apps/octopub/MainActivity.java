@@ -49,13 +49,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void goToThread(Thread thread) {
-        Intent intent = new Intent(this, ThreadActivity.class);
-        intent.putExtra("ThreadID", thread.getId());
-        intent.putExtra("ThreadTitle", thread.getTitle());
-        startActivity(intent);
-    }
-
     private class updateThreads extends AsyncTask<AppCompatActivity, Thread, Void> {
 
         protected Void doInBackground(AppCompatActivity... appCompatActivities) {
