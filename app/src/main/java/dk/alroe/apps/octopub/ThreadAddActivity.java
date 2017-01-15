@@ -37,7 +37,7 @@ public class ThreadAddActivity extends BaseActivity {
     private void addThreadClicked() {
         EditText titleInput = ((EditText) findViewById(R.id.editText_title));
         EditText textInput = ((EditText) findViewById(R.id.editText_text));
-        Thread newThread = new Thread(titleInput.getText().toString(), "NEWTHD", 0, textInput.getText().toString());
+        Thread newThread = new Thread(titleInput.getText().toString(), "NEWTHD", 0, textInput.getText().toString()); //TODO NEWTD seems like a magic number.. Should be well named constant
         new submitThread(newThread).execute(this);
     }
 

@@ -32,7 +32,8 @@ public class HelpActivity extends BaseActivity {
         setSupportActionBar(appToolbar);
         new showHelp().execute(this);
         if (noID()) {
-            new requestID().execute();
+            new requestID().execute(); //TODO. It would be better to load new data in OnResume to assure that user gets the newest data when app is resumed
+            // TODO Furthermore AsyncTasks and other background tasks and listeners should be canceled in OnPause.
         } else {
             updateActionBar();
         }

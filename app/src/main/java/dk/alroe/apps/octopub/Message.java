@@ -4,7 +4,7 @@ package dk.alroe.apps.octopub;
  * Created by silasa on 12/14/16.
  */
 
-class Message {
+class Message { //TODO tip. To improve structure move model classes to a package called eg. model
     private final String text;
     private final String id;
 

@@ -55,7 +55,7 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
         final Thread thread = dataset.get(position);
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.id.setText(thread.getId().substring(0, 3) + "\n" + thread.getId().substring(3));
+        holder.id.setText(thread.getId().substring(0, 3) + "\n" + thread.getId().substring(3)); //TODO could need a little comment or refactoring to well named method. Hard to understand
         holder.title.setText(thread.getTitle());
         int bgColor = Color.parseColor("#" + thread.getId());
         if (ColorHelper.isBrightColor(bgColor)) {

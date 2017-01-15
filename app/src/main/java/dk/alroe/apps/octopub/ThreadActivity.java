@@ -66,7 +66,7 @@ public class ThreadActivity extends BaseActivity {
         });
         setSupportActionBar(appToolbar);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() { //TODO would be best to set listener in onResume and remove in onPause. You could get callbacks when activity is not in foreground or Activity==null
             @Override
             public void onRefresh() {
                 new updateMessages(currentThread, currentProgress).execute();
@@ -162,7 +162,7 @@ public class ThreadActivity extends BaseActivity {
                 e.printStackTrace();
             }
             for (Message message : messages) {
-                publishProgress(message);
+                publishProgress(message); //TODO I see no reason to publish progress while iterating through list of messages. This should be extremely fast
             }
             return null;
         }
@@ -177,7 +177,9 @@ public class ThreadActivity extends BaseActivity {
             if (currentProgress < message.getNumber()) {
                 currentProgress = message.getNumber();
             }
-            mAdapter.notifyDataSetChanged();
+            mAdapter.notifyDataSetChanged(); //TODO instead of invalidating all dataset informations you should use notifyItemChanged or notifyItemAdded. I
+            //TODO if handling multiple changes at once (eg. if you decide to remove progress update callbacks) you could use notifyItemsAdded.
+            //This will result in beautiful animations as well.
         }
 
         @Override

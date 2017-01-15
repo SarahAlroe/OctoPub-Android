@@ -33,6 +33,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.menu = menu;
         MenuInflater inflater = getMenuInflater();
 
+        //TODO would be easier to read if moved to one method eg. SetUIColor(BRIGHT)
         if (ColorHelper.isBrightColor(Color.parseColor("#" + getID().getId()))) {
             getSupportActionBar().getThemedContext().setTheme(R.style.AppBarLight);
             inflater.inflate(R.menu.default_menu_black, menu);
@@ -57,7 +58,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        if (ColorHelper.isBrightColor(Color.parseColor("#" + getID().getId()))) {
+        if (ColorHelper.isBrightColor(Color.parseColor("#" + getID().getId()))) { //TODO a comment might be necessary here. Why setting color to getId?
             getSupportActionBar().getThemedContext().setTheme(R.style.AppBarLight);
         } else {
             getSupportActionBar().getThemedContext().setTheme(R.style.AppBarDark);
@@ -84,7 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected ID getID() {
         SharedPreferences sp = getSharedPreferences("userData", 0);
-        String id = sp.getString("id", "009688");
+        String id = sp.getString("id", "009688"); //TODO extract magic number to constant with a good name
         String hash = sp.getString("hash", null);
         return new ID(id, hash);
     }
