@@ -3,6 +3,8 @@ package dk.alroe.apps.octopub;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +48,14 @@ public class MessageEntryActivity extends Activity {
                 finish();
             }
         });
-        messageInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        messageInput.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                markdownView.loadMarkdown(textView.getText().toString());
-                return false;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void afterTextChanged(Editable editable) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                markdownView.loadMarkdown(messageInput.getText().toString());
             }
         });
     }
