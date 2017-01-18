@@ -1,6 +1,5 @@
 package dk.alroe.apps.octopub;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import dk.alroe.apps.octopub.model.UserId;
+import dk.alroe.apps.octopub.model.Thread;
 
 public class ThreadAddActivity extends BaseActivity {
 
@@ -37,11 +39,11 @@ public class ThreadAddActivity extends BaseActivity {
     private void addThreadClicked() {
         EditText titleInput = ((EditText) findViewById(R.id.editText_title));
         EditText textInput = ((EditText) findViewById(R.id.editText_text));
-        Thread newThread = new Thread(titleInput.getText().toString(), "NEWTHD", 0, textInput.getText().toString()); //TODO NEWTD seems like a magic number.. Should be well named constant
+        Thread newThread = new Thread(titleInput.getText().toString(), "", 0, textInput.getText().toString());
         new submitThread(newThread).execute(this);
     }
 
-    private class submitThread extends AsyncTask<AppCompatActivity, Void, ID> {
+    private class submitThread extends AsyncTask<AppCompatActivity, Void, UserId> {
         private Thread threadToSubmit;
 
         submitThread(Thread thread) {
@@ -49,8 +51,8 @@ public class ThreadAddActivity extends BaseActivity {
             threadToSubmit = thread;
         }
 
-        protected ID doInBackground(AppCompatActivity... appCompatActivities) {
-            ID id = null;
+        protected UserId doInBackground(AppCompatActivity... appCompatActivities) {
+            UserId id = null;
             try {
                 id = WebRequestHandler.getInstance().addThread(threadToSubmit);
             } catch (Exception e) {
@@ -60,7 +62,7 @@ public class ThreadAddActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(ID newID) {
+        protected void onPostExecute(UserId newID) {
             super.onPostExecute(newID);
             updateID(newID);
             Thread transitionThread = new Thread(threadToSubmit.getTitle(), newID.getId(), 0, threadToSubmit.getText());

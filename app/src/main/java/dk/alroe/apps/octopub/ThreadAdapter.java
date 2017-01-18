@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import dk.alroe.apps.octopub.model.Thread;
+
 public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapter<ThreadAdapter.ViewHolder> {
     private ArrayList<Thread> dataset;
     private Context context;
@@ -55,7 +57,10 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
         final Thread thread = dataset.get(position);
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.id.setText(thread.getId().substring(0, 3) + "\n" + thread.getId().substring(3)); //TODO could need a little comment or refactoring to well named method. Hard to understand
+
+        // Text in the id textview consists of the thread id separated in the middle by a newline.
+        String idText = thread.getId().substring(0, 3) + "\n" + thread.getId().substring(3);
+        holder.id.setText(idText);
         holder.title.setText(thread.getTitle());
         int bgColor = Color.parseColor("#" + thread.getId());
         if (ColorHelper.isBrightColor(bgColor)) {

@@ -16,6 +16,9 @@ import android.view.View;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import dk.alroe.apps.octopub.model.Message;
+import dk.alroe.apps.octopub.model.Thread;
+
 public class ThreadActivity extends BaseActivity {
 
     private static final int MESSAGE_REQUEST = 1;
@@ -134,7 +137,7 @@ public class ThreadActivity extends BaseActivity {
         }
     }
 
-    private class updateMessages extends AsyncTask<Void, Message, Void> {
+    private class updateMessages extends AsyncTask<Void, Message, ArrayList<Message>> {
         String threadToGet;
         int startNumber;
 
@@ -144,7 +147,8 @@ public class ThreadActivity extends BaseActivity {
             startNumber = start;
         }
 
-        protected Void doInBackground(Void... Voids) {
+        protected ArrayList<Message> doInBackground(Void... Voids) {
+            ArrayList<Message> messages = new ArrayList<>();
             Thread thread = new Thread("", "", 0);
             try {
                 thread = WebRequestHandler.getInstance().getThread(threadToGet);
@@ -153,38 +157,33 @@ public class ThreadActivity extends BaseActivity {
             }
             if (currentProgress == -1) {
                 Message threadMessage = new Message("#" + thread.getTitle() + "  \n" + thread.getText(), thread.getId(), 1337, -1);
-                publishProgress(threadMessage);
+                messages.add(threadMessage);
             }
-            ArrayList<Message> messages = new ArrayList<>();
             try {
-                messages = WebRequestHandler.getInstance().getMessagesFrom(threadToGet, startNumber);
+                messages.addAll(WebRequestHandler.getInstance().getMessagesFrom(threadToGet, startNumber));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            for (Message message : messages) {
-                publishProgress(message); //TODO I see no reason to publish progress while iterating through list of messages. This should be extremely fast
-            }
-            return null;
-        }
-
-        protected void onProgressUpdate(Message... messageList) {
-            Message message = messageList[0];
-            if (messages.size() != 0) {
-                messages.add(1, message);
-            } else {
-                messages.add(message);
-            }
-            if (currentProgress < message.getNumber()) {
-                currentProgress = message.getNumber();
-            }
-            mAdapter.notifyDataSetChanged(); //TODO instead of invalidating all dataset informations you should use notifyItemChanged or notifyItemAdded. I
-            //TODO if handling multiple changes at once (eg. if you decide to remove progress update callbacks) you could use notifyItemsAdded.
-            //This will result in beautiful animations as well.
+            return messages;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(ArrayList<Message> newMessages) {
+            super.onPostExecute(newMessages);
+            if (messages.size() == 0) {//If opening a new thread, add everything at once.
+                messages.addAll(newMessages);
+                mAdapter.notifyDataSetChanged();
+            } else {//Else add new messages individually
+                for (Message message : newMessages) {
+                    messages.add(1, message);
+                    mAdapter.notifyItemInserted(1);
+                }
+            }
+            for (Message message : newMessages) {//Then make sure currentProgress is the highest it can be.
+                if (currentProgress < message.getNumber()) {
+                    currentProgress = message.getNumber();
+                }
+            }
             swipeRefreshLayout.setRefreshing(false);
         }
     }

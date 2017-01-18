@@ -12,6 +12,8 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import dk.alroe.apps.octopub.model.Thread;
+
 public class MainActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private ThreadAdapter mAdapter;

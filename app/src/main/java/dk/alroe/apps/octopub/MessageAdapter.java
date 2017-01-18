@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
+import dk.alroe.apps.octopub.model.Message;
 import us.feras.mdv.MarkdownView;
 
 /**
@@ -18,7 +18,7 @@ import us.feras.mdv.MarkdownView;
  */
 
 public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapter<MessageAdapter.ViewHolder> {
-    private ArrayList<Message> dataset;
+    private ArrayList<Message> dataset = new ArrayList<>();
     private Context context;
 
     // Provide a reference to the views for each data item
@@ -73,9 +73,6 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        if (dataset == null) { //TODO Tip. To avoid handling null values and thus simplify code use empty ArrayList or Collections.EMPTY_LIST for a more generic solution
-            return 0;
-        }
         return dataset.size();
     }
 

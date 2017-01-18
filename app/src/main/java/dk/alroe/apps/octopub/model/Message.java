@@ -1,10 +1,10 @@
-package dk.alroe.apps.octopub;
+package dk.alroe.apps.octopub.model;
 
 /**
  * Created by silasa on 12/14/16.
  */
 
-class Message { //TODO tip. To improve structure move model classes to a package called eg. model
+public class Message {
     private final String text;
     private final String id;
 

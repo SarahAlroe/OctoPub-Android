@@ -20,6 +20,9 @@ import android.view.MenuItem;
 
 import java.io.IOException;
 
+import dk.alroe.apps.octopub.model.UserId;
+import dk.alroe.apps.octopub.model.Thread;
+
 /**
  * Created by silasa on 1/4/17.
  */
@@ -29,12 +32,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     public Toolbar toolbar;
     private Menu menu;
 
+    public static final int DARK=1;
+    public static final int BRIGHT=2;
+
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
-        MenuInflater inflater = getMenuInflater();
+        if (ColorHelper.isBrightColor(Color.parseColor("#" + getID().getId()))){
+        setUIColor(BRIGHT);}else {setUIColor(DARK);}
 
-        //TODO would be easier to read if moved to one method eg. SetUIColor(BRIGHT)
-        if (ColorHelper.isBrightColor(Color.parseColor("#" + getID().getId()))) {
+        menu.findItem(R.id.view_id).setTitle(getID().getId());
+        return true;
+    }
+
+    private void setUIColor(int color) {
+        MenuInflater inflater = getMenuInflater();
+        if (color==BRIGHT) {
             getSupportActionBar().getThemedContext().setTheme(R.style.AppBarLight);
             inflater.inflate(R.menu.default_menu_black, menu);
             collapsingToolbar.setExpandedTitleColor(Color.BLACK);
@@ -52,17 +64,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_more_vert_white_24dp));
             //setTheme(R.style.AppThemeDark);
         }
-        menu.findItem(R.id.view_id).setTitle(getID().getId());
-        return true;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        if (ColorHelper.isBrightColor(Color.parseColor("#" + getID().getId()))) { //TODO a comment might be necessary here. Why setting color to getId?
-            getSupportActionBar().getThemedContext().setTheme(R.style.AppBarLight);
-        } else {
-            getSupportActionBar().getThemedContext().setTheme(R.style.AppBarDark);
-        }
         super.onCreate(savedInstanceState, persistentState);
     }
 
@@ -83,11 +88,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    protected ID getID() {
+    protected UserId getID() {
         SharedPreferences sp = getSharedPreferences("userData", 0);
-        String id = sp.getString("id", "009688"); //TODO extract magic number to constant with a good name
+        //Get id or return the app primary color.
+        String id = sp.getString("id", getString(R.string.appColor));
         String hash = sp.getString("hash", null);
-        return new ID(id, hash);
+        return new UserId(id, hash);
     }
 
     protected void updateActionBar() {
@@ -106,7 +112,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void updateID(ID idClass) {
+    protected void updateID(UserId idClass) {
         SharedPreferences userData = getSharedPreferences("userData", 0);
         String id = idClass.getId();
         String hash = idClass.getHash();
@@ -148,8 +154,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected class requestID extends AsyncTask<Void, Void, ID> {
-        protected ID doInBackground(Void... voids) {
+    protected class requestID extends AsyncTask<Void, Void, UserId> {
+        protected UserId doInBackground(Void... voids) {
             try {
                 return WebRequestHandler.getInstance().newID();
             } catch (IOException e) {
@@ -159,7 +165,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(ID id) {
+        protected void onPostExecute(UserId id) {
             super.onPostExecute(id);
             updateID(id);
         }

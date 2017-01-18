@@ -2,18 +2,15 @@ package dk.alroe.apps.octopub;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
+import dk.alroe.apps.octopub.model.UserId;
+import dk.alroe.apps.octopub.model.Message;
+import dk.alroe.apps.octopub.model.Thread;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -41,7 +38,7 @@ public class WebRequestHandler {
 
     public interface OctoPub {
         @GET("/newID")
-        Call<ID> id();
+        Call<UserId> id();
 
         @GET("/getThreads")
         Call<List<Thread>> threads();
@@ -61,7 +58,7 @@ public class WebRequestHandler {
 
         @FormUrlEncoded
         @POST("/addThread/")
-        Call<ID> addThread(@Field("title") String title, @Field("text") String text);
+        Call<UserId> addThread(@Field("title") String title, @Field("text") String text);
 
         @GET("/getHelp/")
         Call<String> help();
@@ -73,9 +70,9 @@ public class WebRequestHandler {
         return (ArrayList<Thread>) call.execute().body();
     }
 
-    public ID newID() throws IOException {
+    public UserId newID() throws IOException {
         OctoPub octoPub = retrofit.create(OctoPub.class);
-        Call<ID> call = octoPub.id();
+        Call<UserId> call = octoPub.id();
         return call.execute().body();
     }
 
@@ -97,7 +94,7 @@ public class WebRequestHandler {
         return call.execute().body();
     }
 
-    public boolean addMessage(String thread, String text, ID id) throws IOException {
+    public boolean addMessage(String thread, String text, UserId id) throws IOException {
         OctoPub octoPub = retrofit.create(OctoPub.class);
         Call<String> call = octoPub.addMessage(thread, text, id.getId(), id.getHash());
         return call.execute().isSuccessful();
@@ -109,9 +106,9 @@ public class WebRequestHandler {
         return call.execute().body();
     }
 
-    public ID addThread(Thread thread) throws IOException {
+    public UserId addThread(Thread thread) throws IOException {
         OctoPub octoPub = retrofit.create(OctoPub.class);
-        Call<ID> call = octoPub.addThread(thread.getTitle(), thread.getText());
+        Call<UserId> call = octoPub.addThread(thread.getTitle(), thread.getText());
         return call.execute().body();
     }
 }

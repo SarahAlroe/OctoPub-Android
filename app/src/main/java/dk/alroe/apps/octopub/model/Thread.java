@@ -1,4 +1,4 @@
-package dk.alroe.apps.octopub;
+package dk.alroe.apps.octopub.model;
 
 /**
  * Created by silasa on 12/10/16.
