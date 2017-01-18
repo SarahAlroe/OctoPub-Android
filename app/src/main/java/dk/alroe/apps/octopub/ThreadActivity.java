@@ -15,6 +15,7 @@ import android.view.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import dk.alroe.apps.octopub.model.Message;
 import dk.alroe.apps.octopub.model.Thread;
@@ -171,6 +172,9 @@ public class ThreadActivity extends BaseActivity {
         protected void onPostExecute(ArrayList<Message> newMessages) {
             super.onPostExecute(newMessages);
             if (messages.size() == 0) {//If opening a new thread, add everything at once.
+                messages.add(newMessages.get(0));//Add title message and remove from new
+                newMessages.remove(0);
+                Collections.reverse(newMessages); //Reverse the order for the newest first
                 messages.addAll(newMessages);
                 mAdapter.notifyDataSetChanged();
             } else {//Else add new messages individually
