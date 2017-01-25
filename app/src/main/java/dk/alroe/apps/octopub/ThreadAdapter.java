@@ -1,6 +1,7 @@
 package dk.alroe.apps.octopub;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,11 +26,17 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
         // each data item is just a string in this case
         public TextView title;
         public TextView id;
+        public TextView length;
+        public TextView lengthConnector;
+        public TextView lengthHighlight;
 
         public ViewHolder(View v) {
             super(v);
             this.title = (TextView) v.findViewById(R.id.thread_title);
             this.id = (TextView) v.findViewById(R.id.thread_id);
+            this.length = (TextView) v.findViewById(R.id.thread_length);
+            this.lengthConnector = (TextView) v.findViewById(R.id.thread_length_connector);
+            this.lengthHighlight = (TextView) v.findViewById(R.id.thread_length_highlight);
         }
     }
 
@@ -62,6 +69,20 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
         String idText = thread.getId().substring(0, 3) + "\n" + thread.getId().substring(3);
         holder.id.setText(idText);
         holder.title.setText(thread.getTitle());
+        holder.length.setText(context.getString(R.string.thread_length_prefix)+thread.getLength());
+        SharedPreferences lengthStore = context.getSharedPreferences("threadLength",0);
+        int lastLength = lengthStore.getInt(thread.getId(),-2);
+        if (lastLength == -2){
+            holder.lengthConnector.setText(" - ");
+            holder.lengthHighlight.setText("New thread!");
+        }else if (lastLength!=thread.getLength()){
+            holder.lengthConnector.setText(" - ");
+            holder.lengthHighlight.setText((thread.getLength()-lastLength) + context.getString(R.string.thread_length_new));
+        }
+        else {
+            holder.lengthConnector.setText("");
+            holder.lengthHighlight.setText("");
+        }
         int bgColor = Color.parseColor("#" + thread.getId());
         if (ColorHelper.isBrightColor(bgColor)) {
             holder.id.setTextColor(context.getResources().getColor(R.color.textDark));

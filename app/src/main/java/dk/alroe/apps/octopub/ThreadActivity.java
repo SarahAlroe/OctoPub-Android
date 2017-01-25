@@ -1,6 +1,7 @@
 package dk.alroe.apps.octopub;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -81,7 +82,6 @@ public class ThreadActivity extends BaseActivity {
         } else {
             updateActionBar();
         }
-
     }
 
     private void fabClicked() {
@@ -156,7 +156,7 @@ public class ThreadActivity extends BaseActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (currentProgress == -1) {
+            if (currentProgress == -1 && messages.size()==0) {
                 Message threadMessage = new Message("#" + thread.getTitle() + "  \n" + thread.getText(), thread.getId(), 1337, -1);
                 messages.add(threadMessage);
             }
@@ -186,6 +186,10 @@ public class ThreadActivity extends BaseActivity {
             for (Message message : newMessages) {//Then make sure currentProgress is the highest it can be.
                 if (currentProgress < message.getNumber()) {
                     currentProgress = message.getNumber();
+                    SharedPreferences threadLength = getSharedPreferences("threadLength",0);
+                    SharedPreferences.Editor lengthEditor = threadLength.edit();
+                    lengthEditor.putInt(threadToGet,message.getNumber());
+                    lengthEditor.apply();
                 }
             }
             swipeRefreshLayout.setRefreshing(false);
