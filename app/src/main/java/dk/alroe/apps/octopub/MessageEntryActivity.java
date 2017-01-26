@@ -2,6 +2,7 @@ package dk.alroe.apps.octopub;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,7 +17,7 @@ import us.feras.mdv.MarkdownView;
 
 public class MessageEntryActivity extends Activity {
     private EditText messageInput;
-    private MarkdownView markdownView;
+    private MarkdownViewRework markdownView;
     private Button cancelButton;
     private Button sendButton;
 
@@ -27,7 +28,7 @@ public class MessageEntryActivity extends Activity {
         setContentView(R.layout.activity_message_entry);
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         messageInput = ((EditText) findViewById(R.id.editText_message));
-        markdownView = ((MarkdownView) findViewById(R.id.markdown_message_input));
+        markdownView = ((MarkdownViewRework) findViewById(R.id.markdown_message_input));
         cancelButton = ((Button) findViewById(R.id.button_message_cancel));
         sendButton = ((Button) findViewById(R.id.button_message_send));
 
@@ -58,5 +59,6 @@ public class MessageEntryActivity extends Activity {
                 markdownView.loadMarkdown(messageInput.getText().toString());
             }
         });
+        markdownView.getSettings().setJavaScriptEnabled(true);
     }
 }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import dk.alroe.apps.octopub.model.Message;
-import us.feras.mdv.MarkdownView;
+
 
 /**
  * Created by Silas on 17-12-2016.
@@ -26,13 +26,14 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public MarkdownView text;
+        public MarkdownViewRework text;
         public TextView id;
 
         public ViewHolder(View v) {
             super(v);
-            this.text = (MarkdownView) v.findViewById(R.id.message_markdown);
+            this.text = (MarkdownViewRework) v.findViewById(R.id.message_markdown);
             this.id = (TextView) v.findViewById(R.id.message_id);
+            text.getSettings().setJavaScriptEnabled(true);
         }
     }
 

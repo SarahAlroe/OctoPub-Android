@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <us.feras.mdv.MarkdownView
+        <dk.alroe.apps.octopub.MarkdownViewRework
             android:id="@+id/message_markdown"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
