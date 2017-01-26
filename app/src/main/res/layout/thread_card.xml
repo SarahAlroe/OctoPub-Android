@@ -16,10 +16,10 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/thread_title"
@@ -27,8 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="3"
-                android:paddingLeft="8dp"
                 android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
                 android:textColor="#444"
                 tools:text="Sample title here" />
 

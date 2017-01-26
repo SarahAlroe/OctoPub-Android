@@ -10,50 +10,50 @@
     tools:context="dk.alroe.apps.octopub.ThreadAddActivity">
 
     <android.support.v4.widget.NestedScrollView
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin">
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:orientation="vertical">
 
             <TextView
+                style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/textInput_text_title"
-                style="@style/Base.TextAppearance.AppCompat.Body1" />
+                android:text="@string/textInput_text_title" />
 
             <EditText
+                android:id="@+id/editText_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
                 android:ems="10"
-                android:id="@+id/editText_title" />
+                android:inputType="textPersonName" />
 
             <TextView
+                style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/textInput_text_text"
-                style="@style/Base.TextAppearance.AppCompat.Body1" />
+                android:text="@string/textInput_text_text" />
 
             <EditText
+                android:id="@+id/editText_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
                 android:ems="10"
-                android:id="@+id/editText_text" />
+                android:inputType="textMultiLine" />
 
             <Button
+                android:id="@+id/button_submit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/button_submit"
-                android:id="@+id/button_submit" />
+                android:text="@string/button_submit" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
@@ -70,8 +70,8 @@
             android:fitsSystemWindows="true"
             android:theme="@style/AppBarDark"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:titleEnabled="true"
-            app:title="Add Thread">
+            app:title="Add Thread"
+            app:titleEnabled="true">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/app_toolbar"

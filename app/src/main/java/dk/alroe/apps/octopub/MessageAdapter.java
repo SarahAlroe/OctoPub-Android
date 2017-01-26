@@ -3,12 +3,9 @@ package dk.alroe.apps.octopub;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.webkit.WebSettings;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,26 +20,6 @@ import dk.alroe.apps.octopub.model.Message;
 public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     private ArrayList<Message> dataset = new ArrayList<>();
     private Context context;
-
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public MarkdownViewRework text;
-        public TextView id;
-
-        public ViewHolder(View v) {
-            super(v);
-            this.text = (MarkdownViewRework) v.findViewById(R.id.message_markdown);
-            this.id = (TextView) v.findViewById(R.id.message_id);
-            text.getSettings().setJavaScriptEnabled(true);
-            text.setPadding(0,0,0,0);
-            text.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-            text.getSettings().setLoadWithOverviewMode(true);
-            //text.getSettings().setUseWideViewPort(true);
-        }
-    }
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public MessageAdapter(Context context, ArrayList<Message> nDataset) {
@@ -84,6 +61,21 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
         return dataset.size();
     }
 
+    // Provide a reference to the views for each data item
+    // Complex data items may need more than one view per item, and
+    // you provide access to all the views for a data item in a view holder
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        public MarkdownViewRework text;
+        public TextView id;
+
+        public ViewHolder(View v) {
+            super(v);
+            this.text = (MarkdownViewRework) v.findViewById(R.id.message_markdown);
+            this.id = (TextView) v.findViewById(R.id.message_id);
+            text.getSettings().setJavaScriptEnabled(true);
+        }
+    }
 
 
 }

@@ -20,29 +20,6 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
 
     private OnItemClickListener onItemClickListener;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public LinearLayout card;
-        public TextView title;
-        public TextView id;
-        public TextView length;
-        public TextView lengthConnector;
-        public TextView lengthHighlight;
-
-        public ViewHolder(View v) {
-            super(v);
-            this.card = (LinearLayout) v.findViewById(R.id.thread_card);
-            this.title = (TextView) v.findViewById(R.id.thread_title);
-            this.id = (TextView) v.findViewById(R.id.thread_id);
-            this.length = (TextView) v.findViewById(R.id.thread_length);
-            this.lengthConnector = (TextView) v.findViewById(R.id.thread_length_connector);
-            this.lengthHighlight = (TextView) v.findViewById(R.id.thread_length_highlight);
-        }
-    }
-
     // Provide a suitable constructor (depends on the kind of dataset)
     public ThreadAdapter(Context context, ArrayList<Thread> nDataset) {
         this.context = context;
@@ -72,17 +49,16 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
         String idText = thread.getId().substring(0, 3) + "\n" + thread.getId().substring(3);
         holder.id.setText(idText);
         holder.title.setText(thread.getTitle());
-        holder.length.setText(context.getString(R.string.thread_length_prefix)+thread.getLength());
-        SharedPreferences lengthStore = context.getSharedPreferences("threadLength",0);
-        int lastLength = lengthStore.getInt(thread.getId(),-2);
-        if (lastLength == -2){
+        holder.length.setText(context.getString(R.string.thread_length_prefix) + thread.getLength());
+        SharedPreferences lengthStore = context.getSharedPreferences("threadLength", 0);
+        int lastLength = lengthStore.getInt(thread.getId(), -2);
+        if (lastLength == -2) {
             holder.lengthConnector.setText(" - ");
             holder.lengthHighlight.setText("New thread!");
-        }else if (lastLength!=thread.getLength()){
+        } else if (lastLength != thread.getLength()) {
             holder.lengthConnector.setText(" - ");
-            holder.lengthHighlight.setText((thread.getLength()-lastLength) + context.getString(R.string.thread_length_new));
-        }
-        else {
+            holder.lengthHighlight.setText((thread.getLength() - lastLength) + context.getString(R.string.thread_length_new));
+        } else {
             holder.lengthConnector.setText("");
             holder.lengthHighlight.setText("");
         }
@@ -111,12 +87,35 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
         return dataset.size();
     }
 
+    public OnItemClickListener getOnItemClickListener() {
+        return onItemClickListener;
+    }
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public OnItemClickListener getOnItemClickListener() {
-        return onItemClickListener;
+    // Provide a reference to the views for each data item
+    // Complex data items may need more than one view per item, and
+    // you provide access to all the views for a data item in a view holder
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        public LinearLayout card;
+        public TextView title;
+        public TextView id;
+        public TextView length;
+        public TextView lengthConnector;
+        public TextView lengthHighlight;
+
+        public ViewHolder(View v) {
+            super(v);
+            this.card = (LinearLayout) v.findViewById(R.id.thread_card);
+            this.title = (TextView) v.findViewById(R.id.thread_title);
+            this.id = (TextView) v.findViewById(R.id.thread_id);
+            this.length = (TextView) v.findViewById(R.id.thread_length);
+            this.lengthConnector = (TextView) v.findViewById(R.id.thread_length_connector);
+            this.lengthHighlight = (TextView) v.findViewById(R.id.thread_length_highlight);
+        }
     }
 
 }

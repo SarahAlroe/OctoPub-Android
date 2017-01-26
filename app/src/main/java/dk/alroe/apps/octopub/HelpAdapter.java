@@ -13,19 +13,6 @@ import us.feras.mdv.MarkdownView;
 public class HelpAdapter extends android.support.v7.widget.RecyclerView.Adapter<HelpAdapter.ViewHolder> {
     private ArrayList<String> dataset;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public MarkdownView helpText;
-
-        public ViewHolder(View v) {
-            super(v);
-            this.helpText = (MarkdownView) v.findViewById(R.id.help_view);
-        }
-    }
-
     // Provide a suitable constructor (depends on the kind of dataset)
     public HelpAdapter(Context context, ArrayList<String> nDataset) {
         dataset = nDataset;
@@ -58,5 +45,18 @@ public class HelpAdapter extends android.support.v7.widget.RecyclerView.Adapter<
             return 0;
         }
         return dataset.size();
+    }
+
+    // Provide a reference to the views for each data item
+    // Complex data items may need more than one view per item, and
+    // you provide access to all the views for a data item in a view holder
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        public MarkdownView helpText;
+
+        public ViewHolder(View v) {
+            super(v);
+            this.helpText = (MarkdownView) v.findViewById(R.id.help_view);
+        }
     }
 }

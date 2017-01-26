@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import dk.alroe.apps.octopub.model.UserId;
 import dk.alroe.apps.octopub.model.Message;
 import dk.alroe.apps.octopub.model.Thread;
+import dk.alroe.apps.octopub.model.UserId;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -20,15 +20,9 @@ import retrofit2.http.Query;
  * Created by silasa on 12/6/16.
  */
 public class WebRequestHandler {
-    private static WebRequestHandler ourInstance = new WebRequestHandler();
-
-    public static WebRequestHandler getInstance() {
-        return ourInstance;
-    }
-
     private static final String BASE_URL = "https://api.octopub.tk/";
+    private static WebRequestHandler ourInstance = new WebRequestHandler();
     private Retrofit retrofit;
-
     private WebRequestHandler() {
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -36,32 +30,8 @@ public class WebRequestHandler {
                 .build();
     }
 
-    public interface OctoPub {
-        @GET("/newID")
-        Call<UserId> id();
-
-        @GET("/getThreads")
-        Call<List<Thread>> threads();
-
-        @GET("/getThread/")
-        Call<Thread> thread(@Query("thread") String id);
-
-        @GET("/getMessagesFrom/")
-        Call<ArrayList<Message>> messagesFrom(@Query("thread") String id, @Query("fromNumber") int number);
-
-        @GET("/getHistory/")
-        Call<ArrayList<Message>> history(@Query("thread") String id);
-
-        @FormUrlEncoded
-        @POST("/addMessage/")
-        Call<String> addMessage(@Field("thread") String thread, @Field("text") String text, @Field("id") String id, @Field("hash") String hash);
-
-        @FormUrlEncoded
-        @POST("/addThread/")
-        Call<UserId> addThread(@Field("title") String title, @Field("text") String text);
-
-        @GET("/getHelp/")
-        Call<String> help();
+    public static WebRequestHandler getInstance() {
+        return ourInstance;
     }
 
     public ArrayList<Thread> getThreads() throws IOException {
@@ -110,5 +80,33 @@ public class WebRequestHandler {
         OctoPub octoPub = retrofit.create(OctoPub.class);
         Call<UserId> call = octoPub.addThread(thread.getTitle(), thread.getText());
         return call.execute().body();
+    }
+
+    public interface OctoPub {
+        @GET("/newID")
+        Call<UserId> id();
+
+        @GET("/getThreads")
+        Call<List<Thread>> threads();
+
+        @GET("/getThread/")
+        Call<Thread> thread(@Query("thread") String id);
+
+        @GET("/getMessagesFrom/")
+        Call<ArrayList<Message>> messagesFrom(@Query("thread") String id, @Query("fromNumber") int number);
+
+        @GET("/getHistory/")
+        Call<ArrayList<Message>> history(@Query("thread") String id);
+
+        @FormUrlEncoded
+        @POST("/addMessage/")
+        Call<String> addMessage(@Field("thread") String thread, @Field("text") String text, @Field("id") String id, @Field("hash") String hash);
+
+        @FormUrlEncoded
+        @POST("/addThread/")
+        Call<UserId> addThread(@Field("title") String title, @Field("text") String text);
+
+        @GET("/getHelp/")
+        Call<String> help();
     }
 }

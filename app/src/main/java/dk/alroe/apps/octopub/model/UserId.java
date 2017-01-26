@@ -6,20 +6,20 @@ package dk.alroe.apps.octopub.model;
 
 public class UserId {
 
-    public String getId() {
-        return id;
-    }
-
-    public String getHash() {
-        return hash;
-    }
-
     private final String id;
     private final String hash;
 
     public UserId(String id, String hash) {
         this.id = id;
         this.hash = hash;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getHash() {
+        return hash;
     }
 
     @Override

@@ -20,25 +20,27 @@ import android.view.MenuItem;
 
 import java.io.IOException;
 
-import dk.alroe.apps.octopub.model.UserId;
 import dk.alroe.apps.octopub.model.Thread;
+import dk.alroe.apps.octopub.model.UserId;
 
 /**
  * Created by silasa on 1/4/17.
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
+    public static final int DARK = 1;
+    public static final int BRIGHT = 2;
     public CollapsingToolbarLayout collapsingToolbar;
     public Toolbar toolbar;
     private Menu menu;
 
-    public static final int DARK=1;
-    public static final int BRIGHT=2;
-
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
-        if (ColorHelper.isBrightColor(Color.parseColor("#" + getID().getId()))){
-        setUIColor(BRIGHT);}else {setUIColor(DARK);}
+        if (ColorHelper.isBrightColor(Color.parseColor("#" + getID().getId()))) {
+            setUIColor(BRIGHT);
+        } else {
+            setUIColor(DARK);
+        }
 
         menu.findItem(R.id.view_id).setTitle(getID().getId());
         return true;
@@ -46,7 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void setUIColor(int color) {
         MenuInflater inflater = getMenuInflater();
-        if (color==BRIGHT) {
+        if (color == BRIGHT) {
             getSupportActionBar().getThemedContext().setTheme(R.style.AppBarLight);
             inflater.inflate(R.menu.default_menu_black, menu);
             collapsingToolbar.setExpandedTitleColor(Color.BLACK);

@@ -12,18 +12,25 @@ import us.feras.mdv.MarkdownView;
  * Created by silasa on 1/25/17.
  */
 
-public class MarkdownViewRework extends MarkdownView{
-    public MarkdownViewRework(Context context, AttributeSet attrs){ super(context, attrs);}
-    public MarkdownViewRework(Context context){ super(context);}
+public class MarkdownViewRework extends MarkdownView {
+    public MarkdownViewRework(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public MarkdownViewRework(Context context) {
+        super(context);
+    }
+
     public void loadMarkdown(String txt, String cssFileUrl) {
         loadMarkdownToView(txt, cssFileUrl);
     }
+
     private void loadMarkdownToView(String txt, String cssFileUrl) {
         MarkdownProcessor m = new MarkdownProcessor();
         String preHTML = preProcess(txt);
         String html = m.markdown(preHTML);
         if (cssFileUrl != null) {
-            html = 	"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel='stylesheet' type='text/css' href='"+ cssFileUrl +"' /><div style='word-wrap:break-word;'>" + html+"</div>";
+            html = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel='stylesheet' type='text/css' href='" + cssFileUrl + "' /><div style='word-wrap:break-word;'>" + html + "</div>";
         }
         loadDataWithBaseURL("fake://", html, "text/html", "UTF-8", null);
     }
