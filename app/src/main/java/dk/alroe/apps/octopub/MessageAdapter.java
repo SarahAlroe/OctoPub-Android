@@ -3,9 +3,12 @@ package dk.alroe.apps.octopub;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.webkit.WebSettings;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -34,6 +37,10 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
             this.text = (MarkdownViewRework) v.findViewById(R.id.message_markdown);
             this.id = (TextView) v.findViewById(R.id.message_id);
             text.getSettings().setJavaScriptEnabled(true);
+            text.setPadding(0,0,0,0);
+            text.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+            text.getSettings().setLoadWithOverviewMode(true);
+            //text.getSettings().setUseWideViewPort(true);
         }
     }
 

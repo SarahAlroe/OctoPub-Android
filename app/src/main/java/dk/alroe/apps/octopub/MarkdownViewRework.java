@@ -23,7 +23,7 @@ public class MarkdownViewRework extends MarkdownView{
         String preHTML = preProcess(txt);
         String html = m.markdown(preHTML);
         if (cssFileUrl != null) {
-            html = 	"<link rel='stylesheet' type='text/css' href='"+ cssFileUrl +"' />" + html;
+            html = 	"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel='stylesheet' type='text/css' href='"+ cssFileUrl +"' /><div style='word-wrap:break-word;'>" + html+"</div>";
         }
         loadDataWithBaseURL("fake://", html, "text/html", "UTF-8", null);
     }
