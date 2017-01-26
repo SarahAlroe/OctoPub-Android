@@ -23,16 +23,17 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".HelpActivity"
-            android:parentActivityName=".MainActivity"
-            android:label="@string/title_help"/>
-        <activity android:name=".ThreadAddActivity"
-            android:parentActivityName=".MainActivity"
-            android:label="@string/title_add_thread"/>
+            android:label="@string/title_help"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ThreadAddActivity"
+            android:label="@string/title_add_thread"
+            android:noHistory="true"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MessageEntryActivity"
-            android:theme="@android:style/Theme.Holo.Light.Dialog"
             android:label="@string/title_add_message"
-            />
+            android:theme="@android:style/Theme.Holo.Light.Dialog" />
     </application>
 
 </manifest>
