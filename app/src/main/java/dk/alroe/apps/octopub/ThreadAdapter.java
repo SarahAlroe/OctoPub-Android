@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
+        public LinearLayout card;
         public TextView title;
         public TextView id;
         public TextView length;
@@ -32,6 +34,7 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
 
         public ViewHolder(View v) {
             super(v);
+            this.card = (LinearLayout) v.findViewById(R.id.thread_card);
             this.title = (TextView) v.findViewById(R.id.thread_title);
             this.id = (TextView) v.findViewById(R.id.thread_id);
             this.length = (TextView) v.findViewById(R.id.thread_length);
@@ -96,8 +99,7 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
                 onItemClickListener.onItemClick(thread);
             }
         };
-        holder.title.setOnClickListener(listener);
-        holder.id.setOnClickListener(listener);
+        holder.card.setOnClickListener(listener);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
