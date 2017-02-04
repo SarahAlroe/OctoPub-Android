@@ -51,17 +51,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (color == BRIGHT) {
             getSupportActionBar().getThemedContext().setTheme(R.style.AppBarLight);
             inflater.inflate(R.menu.default_menu_black, menu);
-            collapsingToolbar.setExpandedTitleColor(Color.BLACK);
-            collapsingToolbar.setCollapsedTitleTextColor(Color.BLACK);
-            collapsingToolbar.setExpandedTitleTextAppearance(R.style.AppBarDark);
+            if (collapsingToolbar != null) {
+                collapsingToolbar.setExpandedTitleColor(Color.BLACK);
+                collapsingToolbar.setCollapsedTitleTextColor(Color.BLACK);
+                collapsingToolbar.setExpandedTitleTextAppearance(R.style.AppBarDark);
+            }else {
+                toolbar.setTitleTextColor(Color.BLACK);
+            }
             //toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
             toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_more_vert_black_24dp));
             //setTheme(R.style.AppTheme);
         } else {
             getSupportActionBar().getThemedContext().setTheme(R.style.AppBarDark);
             inflater.inflate(R.menu.default_menu_white, menu);
-            collapsingToolbar.setExpandedTitleColor(Color.WHITE);
-            collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
+            if (collapsingToolbar != null) {
+                collapsingToolbar.setExpandedTitleColor(Color.WHITE);
+                collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
+            }else {
+                toolbar.setTitleTextColor(Color.WHITE);
+            }
             //toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
             toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_more_vert_white_24dp));
             //setTheme(R.style.AppThemeDark);
@@ -102,13 +110,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         int bgColor = Color.parseColor("#" + getID().getId());
         //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(bgColor));
         //collapsingToolbar.setContentScrimColor(bgColor);
+        if (collapsingToolbar != null) {
         collapsingToolbar.setBackgroundColor(bgColor);
+        }else {
+            toolbar.setBackgroundColor(bgColor);
+        }
         if (menu != null) {
             menu.findItem(R.id.view_id).setTitle(getID().getId());
         }
         invalidateOptionsMenu();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            String title = ((String) collapsingToolbar.getTitle());
+            String title = ((String) toolbar.getTitle());
             Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
             setTaskDescription(new ActivityManager.TaskDescription(title, icon, bgColor));
         }

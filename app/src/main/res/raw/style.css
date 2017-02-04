@@ -1,6 +1,6 @@
 @charset "utf-8";
-img{
-    max-width: 90%;
+img,video,audio{
+    max-width: 100%;
 }
 html,body,p{margin:0px; padding:0px;
             overflow:show;height:100%;

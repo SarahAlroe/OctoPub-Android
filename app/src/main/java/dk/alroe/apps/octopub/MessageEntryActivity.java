@@ -7,22 +7,26 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import java.io.IOException;
 
-public class MessageEntryActivity extends FragmentActivity {
+public class MessageEntryActivity extends BaseActivity {
     private EditText messageInput;
     private MarkdownViewRework markdownView;
-    private Button cancelButton;
-    private Button sendButton;
-    private Button contentUploadButton;
+    private ImageButton sendButton;
+    private ImageButton contentUploadButton;
+    private ImageButton markdownButton;
 
     private BottomSheetDialogFragment attachmentFragment;
 
@@ -34,6 +38,7 @@ public class MessageEntryActivity extends FragmentActivity {
     public static final int CAMERA_VIDEO = 4;
     public static final int PICK_AUDIO = 5;
     public static final int RECORD_AUDIO = 6;
+    private boolean markdownViewIsCollapsed=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,22 +47,27 @@ public class MessageEntryActivity extends FragmentActivity {
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         messageInput = ((EditText) findViewById(R.id.editText_message));
         markdownView = ((MarkdownViewRework) findViewById(R.id.markdown_message_input));
-        cancelButton = ((Button) findViewById(R.id.button_message_cancel));
-        sendButton = ((Button) findViewById(R.id.button_message_send));
-        contentUploadButton = ((Button) findViewById(R.id.button_attach));
+        sendButton = ((ImageButton) findViewById(R.id.button_message_send));
+        contentUploadButton = ((ImageButton) findViewById(R.id.button_attach));
+        markdownButton = ((ImageButton) findViewById(R.id.button_markdown));
+
+        Toolbar appToolbar = (Toolbar) findViewById(R.id.app_toolbar);
+        //collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.app_toolbar_collapsing);
+        //collapsingToolbar.setScrimsShown(false);
+        toolbar = appToolbar;
+        setSupportActionBar(appToolbar);
+
+        if (noID()) {
+            new requestID().execute();
+        } else {
+            updateActionBar();
+        }
 
         contentUploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 attachmentFragment = new AttachmentFragment();
                 attachmentFragment.show(getSupportFragmentManager(), attachmentFragment.getTag());
-            }
-        });
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setResult(RESULT_CANCELED);
-                finish();
             }
         });
 
@@ -71,21 +81,29 @@ public class MessageEntryActivity extends FragmentActivity {
             }
         });
 
-        messageInput.addTextChangedListener(new TextWatcher() {
+        markdownButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                markdownView.loadMarkdown(messageInput.getText().toString());
+            public void onClick(View view) {
+                if (markdownViewIsCollapsed){
+                    markdownView.loadMarkdown(messageInput.getText().toString(), "file:///android_res/raw/style.css");
+                    markdownView.getSettings().setJavaScriptEnabled(true);
+                    LinearLayout.LayoutParams mDParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1.0f);
+                    markdownView.setLayoutParams(mDParams);
+                    LinearLayout.LayoutParams mIParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 0.0f);
+                    messageInput.setLayoutParams(mIParams);
+                    markdownButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_off_black_24dp));
+                    markdownViewIsCollapsed = false;
+                }else {
+                    LinearLayout.LayoutParams mDParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 0.0f);
+                    markdownView.setLayoutParams(mDParams);
+                    LinearLayout.LayoutParams mIParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1.0f);
+                    messageInput.setLayoutParams(mIParams);
+                    markdownButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_black_24dp));
+                    markdownViewIsCollapsed = true;
+                }
             }
         });
-        markdownView.getSettings().setJavaScriptEnabled(true);
+
     }
 
     @Override
@@ -112,7 +130,8 @@ public class MessageEntryActivity extends FragmentActivity {
                 new uploadMedia(this).execute(fileUri);
 
             } else if (requestCode == RECORD_AUDIO) {
-
+                Uri fileUri = data.getData();
+                new uploadMedia(this).execute(fileUri);
             }
         }
         attachmentFragment.dismissAllowingStateLoss();
