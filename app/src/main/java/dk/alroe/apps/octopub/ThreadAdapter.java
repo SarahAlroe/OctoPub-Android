@@ -49,7 +49,7 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
         String idText = thread.getId().substring(0, 3) + "\n" + thread.getId().substring(3);
         holder.id.setText(idText);
         holder.title.setText(thread.getTitle());
-        holder.length.setText(context.getString(R.string.thread_length_prefix) + thread.getLength());
+        holder.length.setText(context.getString(R.string.thread_length_prefix) + (thread.getLength()+1));
         SharedPreferences lengthStore = context.getSharedPreferences("threadLength", 0);
         int lastLength = lengthStore.getInt(thread.getId(), -2);
         if (lastLength == -2) {
