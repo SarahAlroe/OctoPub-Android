@@ -3,12 +3,15 @@ package dk.alroe.apps.octopub;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import dk.alroe.apps.octopub.model.Message;
 
@@ -53,6 +56,11 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
             holder.id.setTextColor(context.getResources().getColor(R.color.textBright));
         }
         holder.id.setBackgroundColor(bgColor);
+        if (message.getTime()!=0){
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(message.getTime()*1000);
+        String dateString = DateFormat.format("dd/MM/yyyy HH:mm:ss ", cal).toString();
+        holder.timestamp.setText(dateString);}
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -68,11 +76,13 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
         // each data item is just a string in this case
         public MarkdownViewRework text;
         public TextView id;
+        public TextView timestamp;
 
         public ViewHolder(View v) {
             super(v);
             this.text = (MarkdownViewRework) v.findViewById(R.id.message_markdown);
             this.id = (TextView) v.findViewById(R.id.message_id);
+            this.timestamp = (TextView) v.findViewById(R.id.message_timestamp);
             text.getSettings().setJavaScriptEnabled(true);
         }
     }

@@ -7,10 +7,10 @@ package dk.alroe.apps.octopub.model;
 public class Message {
     private final String text;
     private final String id;
-    private final int time;
+    private final long time;
     private final int number;
 
-    public Message(String text, String id, int time, int number) {
+    public Message(String text, String id, long time, int number) {
         this.text = text;
         this.id = id;
         this.time = time;
@@ -25,7 +25,7 @@ public class Message {
         return id;
     }
 
-    public int getTime() {
+    public long getTime() {
         return time;
     }
 

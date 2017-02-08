@@ -157,7 +157,7 @@ public class ThreadActivity extends BaseActivity {
                 e.printStackTrace();
             }
             if (currentProgress == -1 && messages.size() == 0) {
-                Message threadMessage = new Message("#" + thread.getTitle() + "  \n" + thread.getText(), thread.getId(), 1337, -1);
+                Message threadMessage = new Message("#" + thread.getTitle() + "  \n" + thread.getText(), thread.getId(), 0, -1);
                 messages.add(threadMessage);
             }
             try {
