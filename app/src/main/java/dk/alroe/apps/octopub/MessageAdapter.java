@@ -48,7 +48,11 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.id.setText(message.getId().substring(0, 3) + message.getId().substring(3));
-        holder.text.loadMarkdown(message.getText(), "file:///android_res/raw/style.css");
+        if (message.getHtmlText()!=null){
+            holder.text.loadHtml(message.getHtmlText());
+        }else {
+            message.setHtmlText(holder.text.loadHtmlFromMarkdownAndReturn(message.getText(), "file:///android_res/raw/style.css"));
+        }
         int bgColor = Color.parseColor("#" + message.getId());
         if (ColorHelper.isBrightColor(bgColor)) {
             holder.id.setTextColor(context.getResources().getColor(R.color.textDark));

@@ -9,12 +9,21 @@ public class Message {
     private final String id;
     private final long time;
     private final int number;
+    private String htmlText = null;
 
     public Message(String text, String id, long time, int number) {
         this.text = text;
         this.id = id;
         this.time = time;
         this.number = number;
+    }
+
+    public String getHtmlText() {
+        return htmlText;
+    }
+
+    public void setHtmlText(String htmlText) {
+        this.htmlText = htmlText;
     }
 
     public String getText() {
