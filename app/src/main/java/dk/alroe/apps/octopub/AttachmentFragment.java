@@ -88,7 +88,7 @@ public class AttachmentFragment extends BottomSheetDialogFragment {
                     // Continue only if the File was successfully created
                     if (photoFile != null) {
                         Uri photoURI = FileProvider.getUriForFile(getContext(),
-                                "com.example.android.fileprovider",
+                                getResources().getString(R.string.content_provider),
                                 photoFile);
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
