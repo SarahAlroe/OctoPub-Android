@@ -11,6 +11,16 @@ public class Message {
     private final int number;
     private String htmlText = null;
 
+    public int getWindowHeight() {
+        return windowHeight;
+    }
+
+    public void setWindowHeight(int windowHeight) {
+        this.windowHeight = windowHeight;
+    }
+
+    private int windowHeight = 0;
+
     public Message(String text, String id, long time, int number) {
         this.text = text;
         this.id = id;

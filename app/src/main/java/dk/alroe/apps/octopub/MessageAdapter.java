@@ -1,12 +1,16 @@
 package dk.alroe.apps.octopub;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.IntegerRes;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -43,7 +47,7 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Message message = dataset.get(position);
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
@@ -65,6 +69,12 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
         cal.setTimeInMillis(message.getTime()*1000);
         String dateString = DateFormat.format("dd/MM/yyyy HH:mm:ss ", cal).toString();
         holder.timestamp.setText(dateString);}
+        holder.text.setMinimumHeight(message.getWindowHeight());
+        holder.text.setWebViewClient(new WebViewClient() {
+            public void onPageFinished(WebView view, String url) {
+                message.setWindowHeight(view.getContentHeight());
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -81,6 +91,7 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
         public MarkdownViewRework text;
         public TextView id;
         public TextView timestamp;
+        public Integer messagePosition;
 
         public ViewHolder(View v) {
             super(v);
