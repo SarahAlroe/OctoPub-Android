@@ -1,5 +1,6 @@
 package dk.alroe.apps.octopub;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -76,6 +77,9 @@ public class MainActivity extends BaseActivity {
         protected void onProgressUpdate(Thread... thread) {
             threads.add(thread[0]);
             mAdapter.notifyDataSetChanged();
+            SharedPreferences.Editor editor = getSharedPreferences("threadAlarmLength", 0).edit();
+            editor.putInt(thread[0].getId(),thread[0].getLength());
+            editor.apply();
         }
 
         @Override

@@ -16,4 +16,5 @@
     <string name="title_add_message">New Message</string>
     <string name="thread_length_prefix">"Replies: "</string>
     <string name="thread_length_new">" New!"</string>
+    <string name="action_message_alarm">Notifications</string>
 </resources>

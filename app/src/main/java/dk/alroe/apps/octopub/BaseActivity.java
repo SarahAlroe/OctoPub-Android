@@ -1,8 +1,13 @@
 package dk.alroe.apps.octopub;
 
 import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -10,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.os.SystemClock;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -31,6 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final int DARK = 1;
     public static final int BRIGHT = 2;
     public CollapsingToolbarLayout collapsingToolbar;
+    private PendingIntent pendingIntent;
     public Toolbar toolbar;
     private Menu menu;
 
@@ -43,7 +51,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         menu.findItem(R.id.view_id).setTitle(getID().getId());
+        menu.findItem(R.id.action_message_alarm).setChecked(getIsMessageAlarmEnabled());
+        //Initialize alarm stuff
+        //TODO move this to a more appropriate place.
+        Intent alarmIntent = new Intent(BaseActivity.this, AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(BaseActivity.this, 0, alarmIntent, 0);
+
         return true;
+    }
+    public boolean getIsMessageAlarmEnabled(){
+        SharedPreferences userData = getSharedPreferences("userData", 0);
+        return userData.getBoolean("messageAlarm", false);
     }
 
     private void setUIColor(int color) {
@@ -55,7 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 collapsingToolbar.setExpandedTitleColor(Color.BLACK);
                 collapsingToolbar.setCollapsedTitleTextColor(Color.BLACK);
                 collapsingToolbar.setExpandedTitleTextAppearance(R.style.AppBarDark);
-            }else {
+            } else {
                 toolbar.setTitleTextColor(Color.BLACK);
             }
             //toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -67,7 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (collapsingToolbar != null) {
                 collapsingToolbar.setExpandedTitleColor(Color.WHITE);
                 collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
-            }else {
+            } else {
                 toolbar.setTitleTextColor(Color.WHITE);
             }
             //toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
@@ -79,6 +97,23 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences.Editor editor = getSharedPreferences("userData",0).edit();
+        editor.putBoolean("isOpen",true);
+        editor.apply();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = getSharedPreferences("userData",0).edit();
+        editor.putBoolean("isOpen",false);
+        editor.putBoolean("wasLastOpen",true);
+        editor.apply();
     }
 
     void goToHelp() {
@@ -111,8 +146,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(bgColor));
         //collapsingToolbar.setContentScrimColor(bgColor);
         if (collapsingToolbar != null) {
-        collapsingToolbar.setBackgroundColor(bgColor);
-        }else {
+            collapsingToolbar.setBackgroundColor(bgColor);
+        } else {
             toolbar.setBackgroundColor(bgColor);
         }
         if (menu != null) {
@@ -160,6 +195,14 @@ public abstract class BaseActivity extends AppCompatActivity {
             case R.id.action_refresh_id:
                 new requestID().execute();
                 return true;
+            case R.id.action_message_alarm:
+                item.setChecked(!item.isChecked());
+                if (item.isChecked()) {
+                    startMessageAlarm();
+                } else {
+                    stopMessageAlarm();
+                }
+                return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -183,5 +226,31 @@ public abstract class BaseActivity extends AppCompatActivity {
             super.onPostExecute(id);
             updateID(id);
         }
+    }
+
+    public void startMessageAlarm() {
+        //Start alarm
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+                SystemClock.elapsedRealtime()+AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+
+        //Enable alarm on boot
+        SharedPreferences userData = getSharedPreferences("userData", 0);
+        SharedPreferences.Editor editor = userData.edit();
+        editor.putBoolean("messageAlarm", true);
+        editor.apply();
+    }
+
+    public void stopMessageAlarm() {
+        //Stop alarm
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        manager.cancel(pendingIntent);
+
+        //Disable alarm on boot
+        SharedPreferences userData = getSharedPreferences("userData", 0);
+        SharedPreferences.Editor editor = userData.edit();
+        editor.putBoolean("messageAlarm", false);
+        editor.apply();
     }
 }
