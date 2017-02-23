@@ -115,7 +115,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     editor.putBoolean("wasLastOpen", false);
                     editor.apply();
 
-                    SoundPool sp = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+                    SoundPool sp = new SoundPool(5, AudioManager.STREAM_NOTIFICATION, 0);
                     int soundId = sp.load(context, R.raw.blip, 1);
                     sp.play(soundId, 1, 1, 0, 0, 1);
                     MediaPlayer mPlayer = MediaPlayer.create(context, R.raw.blip);
