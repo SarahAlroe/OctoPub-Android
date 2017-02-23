@@ -7,8 +7,8 @@ android {
         applicationId "dk.alroe.apps.octopub"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 3
-        versionName "0.3"
+        versionCode 4
+        versionName "0.3.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

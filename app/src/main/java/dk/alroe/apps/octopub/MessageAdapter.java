@@ -26,6 +26,7 @@ import dk.alroe.apps.octopub.model.Message;
 
 public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     private ArrayList<Message> dataset = new ArrayList<>();
+    private ArrayList<MarkdownViewRework> activeMarkdownViews = new ArrayList<>();
     private Context context;
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -75,6 +76,29 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
                 message.setWindowHeight(view.getContentHeight());
             }
         });
+        activeMarkdownViews.add(holder.text);
+    }
+    public void doPause(){
+        for (MarkdownViewRework view: activeMarkdownViews
+             ) {
+            view.onPause();
+        }
+    }
+    public void doResume(){
+        for (MarkdownViewRework view: activeMarkdownViews
+                ) {
+            view.onResume();
+        }
+    }
+    @Override
+    public void onViewRecycled(ViewHolder holder) {
+        super.onViewRecycled(holder);
+        activeMarkdownViews.remove(holder.text);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

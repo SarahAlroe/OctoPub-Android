@@ -84,6 +84,18 @@ public class ThreadActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mAdapter.doPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAdapter.doResume();
+    }
+
     private void fabClicked() {
         Intent intent = new Intent(this, MessageEntryActivity.class);
         startActivityForResult(intent, MESSAGE_REQUEST);
