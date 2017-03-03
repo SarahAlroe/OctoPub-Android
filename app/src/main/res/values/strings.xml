@@ -17,4 +17,8 @@
     <string name="thread_length_prefix">"Replies: "</string>
     <string name="thread_length_new">" New!"</string>
     <string name="action_message_alarm">Notifications</string>
+    <string name="notif_new_activity">New activity on OctoPub!</string>
+    <string name="notif_new_thread">"New thread: "</string>
+    <string name="notif_new_message">"1 new message in "</string>
+    <string name="notif_new_messages">" new messages in "</string>
 </resources>
