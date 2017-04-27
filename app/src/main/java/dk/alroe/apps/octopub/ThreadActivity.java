@@ -198,11 +198,17 @@ public class ThreadActivity extends BaseActivity {
             for (Message message : newMessages) {//Then make sure currentProgress is the highest it can be.
                 if (currentProgress < message.getNumber()) {
                     currentProgress = message.getNumber();
-                    SharedPreferences threadLength = getSharedPreferences("threadLength", 0);
-                    SharedPreferences.Editor lengthEditor = threadLength.edit();
-                    lengthEditor.putInt(threadToGet, message.getNumber());
-                    lengthEditor.apply();
                 }
+                //Update threadLength
+                SharedPreferences threadLength = getSharedPreferences("threadLength", 0);
+                SharedPreferences.Editor lengthEditor = threadLength.edit();
+                lengthEditor.putInt(threadToGet, currentProgress);
+                lengthEditor.apply();
+                //Update threadAlarmLength
+                SharedPreferences.Editor editor = getSharedPreferences("threadAlarmLength", 0).edit();
+                editor.putInt(threadToGet, currentProgress);
+                editor.apply();
+
             }
             swipeRefreshLayout.setRefreshing(false);
         }
