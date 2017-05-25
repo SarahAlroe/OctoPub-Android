@@ -43,7 +43,6 @@ public class MainActivity extends BaseActivity {
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.app_toolbar_collapsing);
         toolbar = appToolbar;
         setSupportActionBar(appToolbar);
-        new updateThreads().execute();
         if (noID()) {
             new requestID().execute();
         } else {
@@ -57,6 +56,13 @@ public class MainActivity extends BaseActivity {
                 new updateThreads().execute();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        threads.clear();
+        new updateThreads().execute();
     }
 
     private class updateThreads extends AsyncTask<Void, Thread, Void> {
