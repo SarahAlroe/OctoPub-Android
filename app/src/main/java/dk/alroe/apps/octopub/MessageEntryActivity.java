@@ -1,5 +1,7 @@
 package dk.alroe.apps.octopub;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,10 +16,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import java.io.IOException;
 
@@ -27,6 +32,8 @@ public class MessageEntryActivity extends BaseActivity {
     private ImageButton sendButton;
     private ImageButton contentUploadButton;
     private ImageButton markdownButton;
+    private LottieAnimationView uploadAnimation;
+    private boolean uploadAnimationEnding;
 
     private BottomSheetDialogFragment attachmentFragment;
 
@@ -50,6 +57,7 @@ public class MessageEntryActivity extends BaseActivity {
         sendButton = ((ImageButton) findViewById(R.id.button_message_send));
         contentUploadButton = ((ImageButton) findViewById(R.id.button_attach));
         markdownButton = ((ImageButton) findViewById(R.id.button_markdown));
+        uploadAnimation = ((LottieAnimationView) findViewById(R.id.animation_upload));
 
         Toolbar appToolbar = (Toolbar) findViewById(R.id.app_toolbar);
         //collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.app_toolbar_collapsing);
@@ -135,6 +143,27 @@ public class MessageEntryActivity extends BaseActivity {
             }
         }
         attachmentFragment.dismissAllowingStateLoss();
+        uploadAnimationEnding = false;
+        uploadAnimation.setVisibility(View.VISIBLE);
+        uploadAnimation.setAnimation("upload_animation.json");
+        uploadAnimation.loop(false);
+        uploadAnimation.playAnimation();
+        uploadAnimation.addAnimatorUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                if ((!uploadAnimationEnding) && uploadAnimation.getProgress() > 0.75f){
+                    uploadAnimation.setProgress(0.1f);
+                    valueAnimator.setCurrentPlayTime((long)((float)valueAnimator.getDuration()*0.1f));
+                }
+                else if (uploadAnimationEnding && uploadAnimation.getProgress() > 0.95f){
+                    uploadAnimation.cancelAnimation();
+                    uploadAnimation.setVisibility(View.GONE);
+                    if(messageInput.requestFocus()) {
+                        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    }
+                }
+            }
+        });
     }
 
     private class uploadMedia extends AsyncTask<Uri, Void, String> {
@@ -162,6 +191,7 @@ public class MessageEntryActivity extends BaseActivity {
             int end = Math.max(messageInput.getSelectionEnd(), 0);
             messageInput.getText().replace(Math.min(start, end), Math.max(start, end),
                     markdownUrl, 0, markdownUrl.length());
+            uploadAnimationEnding=true;
         }
     }
 
