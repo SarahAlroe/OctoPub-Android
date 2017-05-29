@@ -24,7 +24,13 @@ import android.widget.LinearLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import java.io.File;
 import java.io.IOException;
+
+import cafe.adriel.androidaudioconverter.AndroidAudioConverter;
+import cafe.adriel.androidaudioconverter.callback.IConvertCallback;
+import cafe.adriel.androidaudioconverter.callback.ILoadCallback;
+import cafe.adriel.androidaudioconverter.model.AudioFormat;
 
 public class MessageEntryActivity extends BaseActivity {
     private EditText messageInput;
@@ -70,6 +76,17 @@ public class MessageEntryActivity extends BaseActivity {
         } else {
             updateActionBar();
         }
+
+        AndroidAudioConverter.load(this, new ILoadCallback() {
+            @Override
+            public void onSuccess() {
+                // Great!
+            }
+            @Override
+            public void onFailure(Exception error) {
+                // FFmpeg is not supported by device
+            }
+        });
 
         contentUploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +135,29 @@ public class MessageEntryActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode == Activity.RESULT_OK) {
+
+            uploadAnimationEnding = false;
+            uploadAnimation.setVisibility(View.VISIBLE);
+            uploadAnimation.setAnimation("upload_animation.json");
+            uploadAnimation.loop(false);
+            uploadAnimation.playAnimation();
+            uploadAnimation.addAnimatorUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    if ((!uploadAnimationEnding) && uploadAnimation.getProgress() > 0.75f){
+                        uploadAnimation.setProgress(0.1f);
+                        valueAnimator.setCurrentPlayTime((long)((float)valueAnimator.getDuration()*0.1f));
+                    }
+                    else if (uploadAnimationEnding && uploadAnimation.getProgress() > 0.95f){
+                        uploadAnimation.cancelAnimation();
+                        uploadAnimation.setVisibility(View.GONE);
+                        if(messageInput.requestFocus()) {
+                            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                        }
+                    }
+                }
+            });
+
             if (requestCode == PICK_IMAGE) {
                 Uri fileUri = data.getData();
                 new uploadMedia(this).execute(fileUri);
@@ -139,31 +179,30 @@ public class MessageEntryActivity extends BaseActivity {
 
             } else if (requestCode == RECORD_AUDIO) {
                 Uri fileUri = data.getData();
-                new uploadMedia(this).execute(fileUri);
+                File recordedFile = new File(fileUri.getPath());
+                IConvertCallback recordConvertCallback = new IConvertCallback() {
+                    @Override
+                    public void onSuccess(File file) {
+                        callbackUploadMedia(file);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        System.out.println(e);
+                        uploadAnimationEnding = true;
+                    }
+                };
+                AndroidAudioConverter.with(this)
+                        .setFile(recordedFile)
+                        .setFormat(AudioFormat.MP3)
+                        .setCallback(recordConvertCallback)
+                        .convert();
             }
         }
         attachmentFragment.dismissAllowingStateLoss();
-        uploadAnimationEnding = false;
-        uploadAnimation.setVisibility(View.VISIBLE);
-        uploadAnimation.setAnimation("upload_animation.json");
-        uploadAnimation.loop(false);
-        uploadAnimation.playAnimation();
-        uploadAnimation.addAnimatorUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                if ((!uploadAnimationEnding) && uploadAnimation.getProgress() > 0.75f){
-                    uploadAnimation.setProgress(0.1f);
-                    valueAnimator.setCurrentPlayTime((long)((float)valueAnimator.getDuration()*0.1f));
-                }
-                else if (uploadAnimationEnding && uploadAnimation.getProgress() > 0.95f){
-                    uploadAnimation.cancelAnimation();
-                    uploadAnimation.setVisibility(View.GONE);
-                    if(messageInput.requestFocus()) {
-                        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                    }
-                }
-            }
-        });
+    }
+    public void callbackUploadMedia(File file){
+        new uploadMedia(this).execute(Uri.parse(file.getAbsolutePath()));
     }
 
     private class uploadMedia extends AsyncTask<Uri, Void, String> {

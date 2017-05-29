@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "dk.alroe.apps.octopub"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 5
         versionName "0.3.2"
@@ -22,6 +22,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue "string", "content_provider", "dk.alroe.apps.octopub.provider"
         }
+    }
+}
+repositories {
+    maven {
+        url "https://jitpack.io"
     }
 }
 
@@ -43,5 +48,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:support-v4:25.1.0'
     compile 'com.airbnb.android:lottie:1.5.2'
+    compile 'com.github.adrielcafe:AndroidAudioConverter:0.0.8'
     testCompile 'junit:junit:4.12'
 }

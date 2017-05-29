@@ -27,6 +27,7 @@ public class AttachmentFragment extends BottomSheetDialogFragment {
     public ImageButton pickAudioButton;
     public ImageButton recordAudioButton;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1872839;
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 9761738;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 2003918;
     private static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 8389103;
 
@@ -158,7 +159,7 @@ public class AttachmentFragment extends BottomSheetDialogFragment {
         recordAudioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.RECORD_AUDIO )
                         != PackageManager.PERMISSION_GRANTED) {
                     if (shouldShowRequestPermissionRationale(
                             Manifest.permission.RECORD_AUDIO)) {
@@ -168,6 +169,18 @@ public class AttachmentFragment extends BottomSheetDialogFragment {
                             MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
                     return;
                 }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE )
+                        != PackageManager.PERMISSION_GRANTED) {
+                    if (shouldShowRequestPermissionRationale(
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    }
+
+                    getActivity().requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+                    return;
+                }
+
                 Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
                 if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                     getActivity().startActivityForResult(intent, MessageEntryActivity.RECORD_AUDIO);
