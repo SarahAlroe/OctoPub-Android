@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -110,6 +111,11 @@ public class ThreadActivity extends BaseActivity {
         }
     }
 
+    public void notifyFail(){
+        Toast.makeText(getApplicationContext(), "Retrieving thread failed - Network error?", Toast.LENGTH_LONG).show();
+        finish();
+    }
+
     public void setTitle(String title) {
         //TextView titleView = (TextView) findViewById(R.id.toolbar_title);
         //titleView.setText(title);
@@ -167,6 +173,7 @@ public class ThreadActivity extends BaseActivity {
                 thread = WebRequestHandler.getInstance().getThread(threadToGet);
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
             if (currentProgress == -1 && messages.size() == 0) {
                 Message threadMessage = new Message("#" + thread.getTitle() + "  \n" + thread.getText(), thread.getId(), 0, -1);
@@ -183,6 +190,10 @@ public class ThreadActivity extends BaseActivity {
         @Override
         protected void onPostExecute(ArrayList<Message> newMessages) {
             super.onPostExecute(newMessages);
+            if (newMessages==null) {
+                notifyFail();
+                return;
+            }
             if (messages.size() == 0) {//If opening a new thread, add everything at once.
                 messages.add(newMessages.get(0));//Add title message and remove from new
                 newMessages.remove(0);

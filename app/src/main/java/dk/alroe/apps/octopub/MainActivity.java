@@ -35,7 +35,7 @@ public class MainActivity extends BaseActivity {
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(Thread item) {
-                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
                 goToThread(item);
             }
         });
