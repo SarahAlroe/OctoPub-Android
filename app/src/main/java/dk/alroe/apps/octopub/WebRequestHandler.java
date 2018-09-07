@@ -32,7 +32,7 @@ import retrofit2.http.Query;
  * Created by silasa on 12/6/16.
  */
 public class WebRequestHandler {
-    private static final String BASE_URL = "https://api.octopub.tk/";
+    private static final String BASE_URL = "https://api.octopub.cf/";
     private static WebRequestHandler ourInstance = new WebRequestHandler();
     private Retrofit retrofit;
 
