@@ -35,19 +35,19 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private class updateNotifications extends AsyncTask<Void, Thread, ArrayList<Thread>> {
-        public static final int NEW_THREAD = 1;
-        public static final int NEW_MESSAGE = 2;
-        public static final int NEW_MESSAGES = 3;
+        static final int NEW_THREAD = 1;
+        static final int NEW_MESSAGE = 2;
+        static final int NEW_MESSAGES = 3;
         private Thread thread;
-        private Context context;
+        private final Context context;
         Boolean doNotification;
-        String contentTitle = "";
+        String contentTitle;
         String contentText = "";
         int updateCount = 0;
         int updateType = 0;
         Intent resultIntent;
 
-        public updateNotifications(Context context) {
+        updateNotifications(Context context) {
             this.context = context;
             contentTitle = context.getString(R.string.notif_new_activity);
             doNotification = false;

@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import dk.alroe.apps.octopub.model.Thread;
 
 public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapter<ThreadAdapter.ViewHolder> {
-    private ArrayList<Thread> dataset;
-    private Context context;
+    private final ArrayList<Thread> dataset;
+    private final Context context;
 
     private OnItemClickListener onItemClickListener;
 
@@ -54,7 +54,7 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
         int lastLength = lengthStore.getInt(thread.getId(), -2);
         if (lastLength == -2) {
             holder.lengthConnector.setText(" - ");
-            holder.lengthHighlight.setText("New thread!");
+            holder.lengthHighlight.setText(R.string.new_thread_notif);
         } else if (lastLength != thread.getLength()) {
             holder.lengthConnector.setText(" - ");
             holder.lengthHighlight.setText((thread.getLength() - lastLength) + context.getString(R.string.thread_length_new));
@@ -100,14 +100,14 @@ public class ThreadAdapter extends android.support.v7.widget.RecyclerView.Adapte
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public LinearLayout card;
-        public TextView title;
-        public TextView id;
-        public TextView length;
-        public TextView lengthConnector;
-        public TextView lengthHighlight;
+        final LinearLayout card;
+        final TextView title;
+        final TextView id;
+        final TextView length;
+        final TextView lengthConnector;
+        final TextView lengthHighlight;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             this.card = (LinearLayout) v.findViewById(R.id.thread_card);
             this.title = (TextView) v.findViewById(R.id.thread_title);

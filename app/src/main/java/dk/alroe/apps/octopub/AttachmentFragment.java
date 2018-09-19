@@ -20,12 +20,12 @@ import java.util.Date;
 
 
 public class AttachmentFragment extends BottomSheetDialogFragment {
-    public ImageButton pickImageButton;
-    public ImageButton cameraImageButton;
-    public ImageButton pickVideoButton;
-    public ImageButton cameraVideoButton;
-    public ImageButton pickAudioButton;
-    public ImageButton recordAudioButton;
+    private ImageButton pickImageButton;
+    private ImageButton cameraImageButton;
+    private ImageButton pickVideoButton;
+    private ImageButton cameraVideoButton;
+    private ImageButton pickAudioButton;
+    private ImageButton recordAudioButton;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1872839;
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 9761738;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 2003918;
@@ -191,7 +191,7 @@ public class AttachmentFragment extends BottomSheetDialogFragment {
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = null;
+        String timeStamp;
         timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "OCTAND-" + timeStamp + "-";
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);

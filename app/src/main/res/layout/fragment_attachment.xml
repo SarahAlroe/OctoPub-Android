@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                android:contentDescription="Take photo"
+                android:contentDescription="@string/button_take_photo"
                 android:src="@drawable/ic_photo_camera_black_72dp" />
 
             <ImageButton
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                android:contentDescription="Image"
+                android:contentDescription="@string/button_select_image"
                 android:src="@drawable/ic_photo_black_72dp" />
 
             <ImageButton
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                android:contentDescription="Record video"
+                android:contentDescription="@string/button_record_video"
                 android:src="@drawable/ic_videocam_black_72dp" />
 
             <ImageButton
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                android:contentDescription="Video"
+                android:contentDescription="@string/button_select_video"
                 android:src="@drawable/ic_movie_black_72dp" />
 
         </LinearLayout>
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                android:contentDescription="Record audio"
+                android:contentDescription="@string/button_record_audio"
                 android:src="@drawable/ic_mic_black_72dp" />
 
             <ImageButton
@@ -80,21 +80,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                android:contentDescription="Audio"
+                android:contentDescription="@string/button_select_audio"
                 android:src="@drawable/ic_music_note_black_72dp" />
-
-            <ImageButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/transparent" />
-
-            <ImageButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-
-                android:background="@color/transparent" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

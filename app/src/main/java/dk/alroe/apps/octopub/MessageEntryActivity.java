@@ -1,6 +1,5 @@
 package dk.alroe.apps.octopub;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
@@ -9,15 +8,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -158,56 +152,65 @@ public class MessageEntryActivity extends BaseActivity {
                 }
             });
 
-            if (requestCode == PICK_IMAGE) {
-                Uri fileUri = data.getData();
-                new uploadMedia(this).execute(fileUri);
+            switch (requestCode) {
+                case PICK_IMAGE: {
+                    Uri fileUri = data.getData();
+                    new uploadMedia(this).execute(fileUri);
+                    break;
+                }
+                case CAMERA_IMAGE: {
+                    Uri fileUri = Uri.parse(currentMediaFilePath);
+                    new uploadMedia(this).execute(fileUri);
+                    break;
+                }
+                case PICK_VIDEO: {
+                    Uri fileUri = data.getData();
+                    new uploadMedia(this).execute(fileUri);
+                    break;
+                }
+                case CAMERA_VIDEO: {
+                    Uri fileUri = data.getData();
+                    new uploadMedia(this).execute(fileUri);
+                    break;
+                }
+                case PICK_AUDIO: {
+                    Uri fileUri = data.getData();
+                    new uploadMedia(this).execute(fileUri);
+                    break;
+                }
+                case RECORD_AUDIO: {
+                    Uri fileUri = data.getData();
+                    File recordedFile = new File(fileUri.getPath());
+                    IConvertCallback recordConvertCallback = new IConvertCallback() {
+                        @Override
+                        public void onSuccess(File file) {
+                            callbackUploadMedia(file);
+                        }
 
-            } else if (requestCode == CAMERA_IMAGE) {
-                Uri fileUri = Uri.parse(currentMediaFilePath);
-                new uploadMedia(this).execute(fileUri);
-            } else if (requestCode == PICK_VIDEO) {
-                Uri fileUri = data.getData();
-                new uploadMedia(this).execute(fileUri);
-
-            } else if (requestCode == CAMERA_VIDEO) {
-                Uri fileUri = data.getData();
-                new uploadMedia(this).execute(fileUri);
-
-            } else if (requestCode == PICK_AUDIO) {
-                Uri fileUri = data.getData();
-                new uploadMedia(this).execute(fileUri);
-
-            } else if (requestCode == RECORD_AUDIO) {
-                Uri fileUri = data.getData();
-                File recordedFile = new File(fileUri.getPath());
-                IConvertCallback recordConvertCallback = new IConvertCallback() {
-                    @Override
-                    public void onSuccess(File file) {
-                        callbackUploadMedia(file);
-                    }
-
-                    @Override
-                    public void onFailure(Exception e) {
-                        System.out.println(e);
-                        uploadAnimationEnding = true;
-                    }
-                };
-                AndroidAudioConverter.with(this)
-                        .setFile(recordedFile)
-                        .setFormat(AudioFormat.MP3)
-                        .setCallback(recordConvertCallback)
-                        .convert();
+                        @Override
+                        public void onFailure(Exception e) {
+                            System.out.println(e);
+                            uploadAnimationEnding = true;
+                        }
+                    };
+                    AndroidAudioConverter.with(this)
+                            .setFile(recordedFile)
+                            .setFormat(AudioFormat.MP3)
+                            .setCallback(recordConvertCallback)
+                            .convert();
+                    break;
+                }
             }
         }
         attachmentFragment.dismissAllowingStateLoss();
     }
-    public void callbackUploadMedia(File file){
+    private void callbackUploadMedia(File file){
         new uploadMedia(this).execute(Uri.parse(file.getAbsolutePath()));
     }
 
     private class uploadMedia extends AsyncTask<Uri, Void, String> {
 
-        private Context context;
+        private final Context context;
 
         uploadMedia(Context context) {
             this.context = context;
@@ -235,6 +238,6 @@ public class MessageEntryActivity extends BaseActivity {
     }
 
     private String markdownPrepare(String urlString) {
-        return " ![](https://octopub.tk/img/" + urlString + ") "; //TODO Extract to var
+        return " ![](https://octopub.cf/img/" + urlString + ") "; //TODO Extract to var
     }
 }

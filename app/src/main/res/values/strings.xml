@@ -1,6 +1,6 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">OctoPub</string>
-    <string name="edit_message">Enter a message</string>
+    <string name="edit_message" tools:keep="@string/edit_message">Enter a message</string>
     <string name="button_send">Send</string>
     <string name="action_refresh_id">Refresh ID</string>
     <string name="action_help">Help</string>
@@ -9,8 +9,6 @@
     <string name="textInput_text_title">Title</string>
     <string name="textInput_text_text">Text</string>
     <string name="button_submit">Submit</string>
-    <string name="button_cancel">Cancel</string>
-    <string name="markdown_preview">Markdown Preview:</string>
     <string name="title_help">Help</string>
     <string name="title_add_thread">Add Thread</string>
     <string name="title_add_message">New Message</string>
@@ -21,4 +19,12 @@
     <string name="notif_new_thread">"New thread: "</string>
     <string name="notif_new_message">"1 new message in "</string>
     <string name="notif_new_messages">" new messages in "</string>
+    <string name="button_take_photo">Take photo</string>
+    <string name="button_select_image">Select image</string>
+    <string name="button_record_video">Record video</string>
+    <string name="button_select_video">Select video</string>
+    <string name="button_record_audio">Record audio</string>
+    <string name="button_select_audio">Select audio</string>
+    <string name="error_get_help_failed">Failed to get help. Save yourselves!</string>
+    <string name="new_thread_notif">New thread!</string>
 </resources>

@@ -29,6 +29,7 @@
                 android:maxLines="3"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
+                android:paddingRight="8dp"
                 android:textColor="#444"
                 tools:text="Sample title here" />
 
@@ -36,7 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingLeft="8dp">
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
 
                 <TextView
                     android:id="@+id/thread_length"

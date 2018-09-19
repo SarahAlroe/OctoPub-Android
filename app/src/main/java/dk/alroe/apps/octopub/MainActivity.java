@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ public class MainActivity extends BaseActivity {
     private ThreadAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ArrayList<Thread> threads = new ArrayList<>();
+    private final ArrayList<Thread> threads = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

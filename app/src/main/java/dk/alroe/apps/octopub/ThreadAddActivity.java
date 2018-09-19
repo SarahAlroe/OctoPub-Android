@@ -44,7 +44,7 @@ public class ThreadAddActivity extends BaseActivity {
     }
 
     private class submitThread extends AsyncTask<AppCompatActivity, Void, UserId> {
-        private Thread threadToSubmit;
+        private final Thread threadToSubmit;
 
         submitThread(Thread thread) {
             super();

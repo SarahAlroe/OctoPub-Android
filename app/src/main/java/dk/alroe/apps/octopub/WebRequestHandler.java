@@ -33,8 +33,8 @@ import retrofit2.http.Query;
  */
 public class WebRequestHandler {
     private static final String BASE_URL = "https://api.octopub.cf/";
-    private static WebRequestHandler ourInstance = new WebRequestHandler();
-    private Retrofit retrofit;
+    private static final WebRequestHandler ourInstance = new WebRequestHandler();
+    private final Retrofit retrofit;
 
     private WebRequestHandler() {
         retrofit = new Retrofit.Builder()
@@ -124,7 +124,7 @@ public class WebRequestHandler {
         return result;
     }
 
-    public interface OctoPub {
+    interface OctoPub {
         @GET("/newID")
         Call<UserId> id();
 
@@ -151,7 +151,7 @@ public class WebRequestHandler {
         @GET("/getHelp/")
         Call<String> help();
 
-        @POST("https://octopub.tk/upload.php")
+        @POST("https://octopub.cf/upload.php")
         Call<UploadResponse> upload(@Query("name") String name,
                                     @Body RequestBody file
         );

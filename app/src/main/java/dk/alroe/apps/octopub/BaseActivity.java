@@ -3,11 +3,9 @@ package dk.alroe.apps.octopub;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -23,7 +21,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -35,11 +32,11 @@ import dk.alroe.apps.octopub.model.UserId;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
-    public static final int DARK = 1;
-    public static final int BRIGHT = 2;
-    public CollapsingToolbarLayout collapsingToolbar;
+    private static final int DARK = 1;
+    private static final int BRIGHT = 2;
+    CollapsingToolbarLayout collapsingToolbar;
     private PendingIntent pendingIntent;
-    public Toolbar toolbar;
+    Toolbar toolbar;
     private Menu menu;
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,7 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         return true;
     }
-    public boolean getIsMessageAlarmEnabled(){
+    private boolean getIsMessageAlarmEnabled(){
         SharedPreferences userData = getSharedPreferences("userData", 0);
         return userData.getBoolean("messageAlarm", false);
     }
@@ -116,12 +113,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    void goToHelp() {
+    private void goToHelp() {
         Intent intent = new Intent(this, HelpActivity.class);
         startActivity(intent);
     }
 
-    void goToThreadAdd() {
+    private void goToThreadAdd() {
         Intent intent = new Intent(this, ThreadAddActivity.class);
         startActivity(intent);
     }
@@ -133,7 +130,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    protected UserId getID() {
+    UserId getID() {
         SharedPreferences sp = getSharedPreferences("userData", 0);
         //Get id or return the app primary color.
         String id = sp.getString("id", getString(R.string.appColor));
@@ -141,7 +138,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return new UserId(id, hash);
     }
 
-    protected void updateActionBar() {
+    void updateActionBar() {
         int bgColor = Color.parseColor("#" + getID().getId());
         //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(bgColor));
         //collapsingToolbar.setContentScrimColor(bgColor);
@@ -161,7 +158,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void updateID(UserId idClass) {
+    void updateID(UserId idClass) {
         SharedPreferences userData = getSharedPreferences("userData", 0);
         String id = idClass.getId();
         String hash = idClass.getHash();
@@ -173,7 +170,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
-    protected boolean noID() {
+    boolean noID() {
         SharedPreferences userData = getSharedPreferences("userData", 0);
         String id = userData.getString("id", null);
         return (id == null);
@@ -211,7 +208,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected class requestID extends AsyncTask<Void, Void, UserId> {
+    class requestID extends AsyncTask<Void, Void, UserId> {
         protected UserId doInBackground(Void... voids) {
             try {
                 return WebRequestHandler.getInstance().newID();
@@ -228,7 +225,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void startMessageAlarm() {
+    private void startMessageAlarm() {
         //Start alarm
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
@@ -242,7 +239,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    public void stopMessageAlarm() {
+    private void stopMessageAlarm() {
         //Stop alarm
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         manager.cancel(pendingIntent);

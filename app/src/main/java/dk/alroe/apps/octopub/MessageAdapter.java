@@ -1,9 +1,7 @@
 package dk.alroe.apps.octopub;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.support.annotation.IntegerRes;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -25,9 +23,9 @@ import dk.alroe.apps.octopub.model.Message;
  */
 
 public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapter<MessageAdapter.ViewHolder> {
-    private ArrayList<Message> dataset = new ArrayList<>();
-    private ArrayList<MarkdownViewRework> activeMarkdownViews = new ArrayList<>();
-    private Context context;
+    private ArrayList<Message> dataset;
+    private final ArrayList<MarkdownViewRework> activeMarkdownViews = new ArrayList<>();
+    private final Context context;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public MessageAdapter(Context context, ArrayList<Message> nDataset) {
@@ -112,12 +110,12 @@ public class MessageAdapter extends android.support.v7.widget.RecyclerView.Adapt
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public MarkdownViewRework text;
-        public TextView id;
-        public TextView timestamp;
+        final MarkdownViewRework text;
+        final TextView id;
+        final TextView timestamp;
         public Integer messagePosition;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             this.text = (MarkdownViewRework) v.findViewById(R.id.message_markdown);
             this.id = (TextView) v.findViewById(R.id.message_id);

@@ -25,10 +25,10 @@ import dk.alroe.apps.octopub.model.Thread;
 public class ThreadActivity extends BaseActivity {
 
     private static final int MESSAGE_REQUEST = 1;
-    public ArrayList<Message> messages = new ArrayList<>();
-    public int currentProgress = -1;
-    public String currentThread;
-    public Toolbar appToolbar;
+    private final ArrayList<Message> messages = new ArrayList<>();
+    private int currentProgress = -1;
+    private String currentThread;
+    private Toolbar appToolbar;
     private RecyclerView mRecyclerView;
     private MessageAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -111,12 +111,12 @@ public class ThreadActivity extends BaseActivity {
         }
     }
 
-    public void notifyFail(){
+    private void notifyFail(){
         Toast.makeText(getApplicationContext(), "Retrieving thread failed - Network error?", Toast.LENGTH_LONG).show();
         finish();
     }
 
-    public void setTitle(String title) {
+    private void setTitle(String title) {
         //TextView titleView = (TextView) findViewById(R.id.toolbar_title);
         //titleView.setText(title);
         //((TextView) findViewById(R.id.toolbar_title)).setText(title);
@@ -131,7 +131,7 @@ public class ThreadActivity extends BaseActivity {
     }
 
     private class submitMessage extends AsyncTask<AppCompatActivity, Void, Void> {
-        String messageToSend;
+        final String messageToSend;
         ThreadActivity parent;
 
         submitMessage(String message) {
@@ -157,10 +157,10 @@ public class ThreadActivity extends BaseActivity {
     }
 
     private class updateMessages extends AsyncTask<Void, Message, ArrayList<Message>> {
-        String threadToGet;
-        int startNumber;
+        final String threadToGet;
+        final int startNumber;
 
-        public updateMessages(String id, int start) {
+        updateMessages(String id, int start) {
             super();
             threadToGet = id;
             startNumber = start;
@@ -168,7 +168,7 @@ public class ThreadActivity extends BaseActivity {
 
         protected ArrayList<Message> doInBackground(Void... Voids) {
             ArrayList<Message> messages = new ArrayList<>();
-            Thread thread = new Thread("", "", 0);
+            Thread thread;
             try {
                 thread = WebRequestHandler.getInstance().getThread(threadToGet);
             } catch (IOException e) {

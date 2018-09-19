@@ -14,7 +14,7 @@ public class HelpActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private HelpAdapter mAdapter;
-    private ArrayList<String> helps = new ArrayList<>();
+    private final ArrayList<String> helps = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,8 @@ public class HelpActivity extends BaseActivity {
             String help = null;
             try {
                 help = WebRequestHandler.getInstance().getHelp();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
+                help = getString(R.string.error_get_help_failed);
             }
             return help;
         }

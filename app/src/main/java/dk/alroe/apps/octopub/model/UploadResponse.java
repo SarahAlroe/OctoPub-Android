@@ -12,7 +12,7 @@ public class UploadResponse {
         return result;
     }
 
-    public UploadResult result;
+    public final UploadResult result;
 
     public UploadResponse(UploadResult result) {
         this.result = result;

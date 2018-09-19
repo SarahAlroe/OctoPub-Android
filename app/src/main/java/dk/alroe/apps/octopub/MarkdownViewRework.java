@@ -45,7 +45,7 @@ public class MarkdownViewRework extends MarkdownView {
         loadDataWithBaseURL("fake://", html, "text/html", "UTF-8", null);
     }
 
-    public String getHtmlFromMarkdown(String txt, String cssFileUrl){
+    private String getHtmlFromMarkdown(String txt, String cssFileUrl){
         MarkdownProcessor m = new MarkdownProcessor();
         String preHTML = preProcess(txt);
         String html = m.markdown(preHTML);
